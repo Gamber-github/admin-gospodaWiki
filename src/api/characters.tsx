@@ -6,7 +6,7 @@ import { BuildGetArgs, OptionalPageParams } from "./utils/types";
 type GetCharacters = BuildGetArgs<undefined, OptionalPageParams>;
 
 const getCharacters = async ({ queryParams }: GetCharacters) =>
-  makeAdminGet(`character${stringifyParams(queryParams)}`);
+  makeAdminGet(`character${stringifyParams(queryParams)}`, );
 
 export const useCharacters = (
   queryParams: GetCharacters["queryParams"] = {}
