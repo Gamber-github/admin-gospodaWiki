@@ -4,7 +4,7 @@ export const buildPagination = (
   data: { pageSize: number; totalItemCount: number },
   setPage: Dispatch<SetStateAction<number>>
 ) => {
-  return data.totalItemCount > 2
+  return data.totalItemCount > 10
     ? {
         pagesize: data.pageSize,
         total: data.totalItemCount,

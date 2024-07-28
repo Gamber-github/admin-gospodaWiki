@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import { Layout } from "antd";
 
 const { Content } = Layout;

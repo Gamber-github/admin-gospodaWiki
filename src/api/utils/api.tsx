@@ -7,7 +7,9 @@ type Api = "admin";
 type Request =
   | { method: "GET"; payload?: unknown; type?: "json" | "form-data" }
   | { method: "POST"; payload: unknown; type: "json" | "form-data" }
-  | { method: "PUT"; payload: unknown; type: "json" | "form-data" };
+  | { method: "PUT"; payload: unknown; type: "json" | "form-data" }
+  | { method: "PATCH"; payload?: unknown; type: "json" | "form-data" }
+  | { method: "DELETE"; payload?: unknown; type: "json" | "form-data" };
 
 export const getApiUrl = (api: Api): string => {
   const url = api === "admin" ? import.meta.env.VITE_ADMIN_API_URL : undefined;
@@ -19,7 +21,7 @@ const extractResponse = async (response: Response) => {
   try {
     return await response.json();
   } catch (error) {
-    throw new Error(`Error: ${error}`);
+    return {};
   }
 };
 
@@ -88,6 +90,45 @@ export const makeAdminPost = <T extends z.ZodTypeAny>(
     path,
     schema,
   });
+
+export const makeAdminPatch = <T extends z.ZodTypeAny>(
+  path: string,
+  schema: T,
+  payload?: unknown
+) => {
+  buildDataQuery({
+    api: "admin",
+    request: { method: "PATCH", type: "json", payload },
+    path,
+    schema,
+  });
+};
+
+export const makeAdminPut = <T extends z.ZodTypeAny>(
+  path: string,
+  schema: T,
+  payload: unknown
+) => {
+  buildDataQuery({
+    api: "admin",
+    request: { method: "PUT", type: "json", payload },
+    path,
+    schema,
+  });
+};
+
+export const makeAdminDelete = <T extends z.ZodTypeAny>(
+  path: string,
+  schema: T,
+  payload: unknown
+) => {
+  buildDataQuery({
+    api: "admin",
+    request: { method: "DELETE", payload, type: "json" },
+    path,
+    schema,
+  });
+};
 
 export const stringifyParams = (params?: Record<string, unknown> | undefined) =>
   `${Object.keys(params || {}).length ? "?" : ""}${qs.stringify(params || {})}`;
