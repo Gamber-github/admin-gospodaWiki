@@ -82,10 +82,12 @@ const Sidebar: React.FC = () => {
       icon: <TagOutlined />,
       onClick: () => navigate("tags"),
     },
+    { key: "divider", type: "divider" },
     {
       icon: <LogoutOutlined />,
       label: "Wyloguj się",
       key: "logout",
+
       onClick: () => logout(),
     },
   ];

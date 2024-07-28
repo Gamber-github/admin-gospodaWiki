@@ -41,7 +41,7 @@ export const LoginComponent = () => {
       >
         <Form.Item
           name="username"
-          rules={[{ required: true, message: "Please input your Username!" }]}
+          rules={[{ required: true, message: "Podaj nazwę użytkownika!" }]}
           help={errors.userName?.message as string}
           validateStatus={errors.userName ? "error" : ""}
         >

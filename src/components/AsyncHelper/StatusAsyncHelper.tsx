@@ -1,7 +1,7 @@
 import { Flex, Typography } from "antd";
 import { arrify } from "../../utils/object";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Spinner } from "../UI/Spinner";
+import { Spinner } from "../UI/Spinner/Spinner";
 
 type Status = "success" | "loading" | "error" | "idle";
 

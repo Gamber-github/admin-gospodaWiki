@@ -12,7 +12,8 @@ import { stringifyParams } from "../api/utils/api";
 import Error404 from "../pages/Error404";
 import Dashboard from "../pages/Dashboard";
 import { Private } from "./PrivateRoute";
-import { Players } from "../pages/Players";
+import { Players } from "../pages/Players/Players";
+import { PlayerEdit } from "../pages/Players/PlayerEdit";
 
 export const APP_ROUTES = {
   main: "/",
@@ -32,7 +33,7 @@ export const APP_ROUTES = {
   editItem: "/items/:id/edit",
   players: "/players",
   player: "/players/:id",
-  editPlayer: "/players/:id/edit",
+  editPlayer: "/players/:playerId/edit",
   rpgSystems: "/rpg-systems",
   rpgSystem: "/rpg-systems/:id",
   editRpgSystem: "/rpg-systems/:id/edit",
@@ -75,8 +76,10 @@ export type GetPeyload<T extends RouteName> = ExtractParams<
   ? [undefined?]
   : [Record<keyof ExtractParams<RoutesMap[T]>, string>];
 
-export const getUrl = <T extends RouteName>(url: T, ...params: GetPeyload<T>) =>
-  generatePath<string>(APP_ROUTES[url], params);
+export const getUrl = <T extends RouteName>(
+  url: T,
+  ...[params]: GetPeyload<T>
+) => generatePath<string>(APP_ROUTES[url], params);
 
 export const routes: (RouteObject & { path: Route })[] = [
   {
@@ -94,6 +97,10 @@ export const routes: (RouteObject & { path: Route })[] = [
   {
     path: "/players",
     element: <Private element={Players} />,
+  },
+  {
+    path: "/players/:playerId/edit",
+    element: <Private element={PlayerEdit} />,
   },
   {
     path: "*",
