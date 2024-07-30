@@ -4,11 +4,12 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEditPlayer } from "../../api/players";
-import { PlayerDetailsResponseSchema } from "../../api/responseSchemas";
+import { PlayerDetailsResponseSchema } from "../../api/utils/ResponseSchema/responseSchemas";
 import Title from "antd/es/typography/Title";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
-import { SeriesSelection } from "./SeriesSelection";
+import { CustomSelection } from "../UI/Select/CustomSelection";
+import { useGetSeries } from "../../api/series";
 
 export const editPlayerSchema = z.object({
   firstName: z.string(),
@@ -44,9 +45,21 @@ export const EditPlayerForm: React.FC<{
     playerData.playerId.toString()
   );
 
-  const submit = (payload: EditPlayerSchemaType) => {
+  const {
+    data: seriesData,
+    status: seriesStatus,
+    error: seriesError,
+  } = useGetSeries();
+
+  const mappedSeries =
+    seriesData?.items.map((serie) => ({
+      valueId: serie.seriesId,
+      name: serie.name,
+    })) ?? [];
+
+  const submit = async (payload: EditPlayerSchemaType) => {
     try {
-      EditPlayer(payload);
+      await EditPlayer(payload);
       message.success("Gracz pomyślnie zaktualizowany");
       onSubmit();
     } catch (error) {
@@ -105,9 +118,15 @@ export const EditPlayerForm: React.FC<{
           name="seriesId"
           control={control}
           render={({ field }) => (
-            <SeriesSelection
+            <CustomSelection
+              selectionData={{ data: mappedSeries }}
+              error={seriesError}
+              status={seriesStatus}
               {...field}
-              data={playerData.series}
+              data={mappedSeries.map((item) => ({
+                valueId: item.valueId,
+                name: item.name,
+              }))}
               onChange={field.onChange}
             />
           )}

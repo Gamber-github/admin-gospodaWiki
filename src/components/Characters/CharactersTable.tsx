@@ -1,49 +1,55 @@
-import { Button, Table, Typography } from "antd";
+import { Button, Typography } from "antd";
 import React, { useState } from "react";
-import {
-  playerIdParam,
-  useDeletePlayer,
-  useGetPlayers,
-} from "../../api/players";
 
 import { buildPagination, DEFAULT_TABLE_SIZE } from "../helpers";
 import { StatusAsyncHelper } from "../AsyncHelper/StatusAsyncHelper";
 import { useNav } from "../../routes/router";
-import { ColumnType } from "antd/es/table";
+import Table, { ColumnType } from "antd/es/table";
 import { EditOutlined } from "@ant-design/icons";
 import DeleteButton from "../UI/Buttons/DeleteButton";
+import {
+  characterIdParam,
+  useDeleteCharacter,
+  useGetCharacters,
+} from "../../api/characters";
 
-type PlayerData = {
-  playerId: number;
+type CharacterData = {
+  characterId: number;
   firstName: string;
   lastName: string;
   fullName: string;
+  rpgSystem: string;
   isPublished: boolean;
 };
 
 const { Text } = Typography;
 
-export const PlayersTable: React.FC = () => {
+export const CharactersTable: React.FC = () => {
   const [page, setPage] = useState(1);
 
-  const { data, status, error } = useGetPlayers({
+  const { data, status, error } = useGetCharacters({
     pageSize: DEFAULT_TABLE_SIZE,
     pageNumber: page,
   });
 
-  const { mutateAsync, status: DeleteStatus } = useDeletePlayer();
+  const { mutateAsync, status: deleteStatus } = useDeleteCharacter();
 
   const { navigate } = useNav();
 
-  const columns: ColumnType<PlayerData>[] = [
+  const columns: ColumnType<CharacterData>[] = [
     {
       title: "Imię i Nazwisko",
       dataIndex: "fullName",
       key: "fullName",
       align: "center",
-      render: (text, data) => (
-        <Text>{data.firstName + " " + data.lastName}</Text>
-      ),
+      render: (text, data) => <Text>{data.fullName}</Text>,
+    },
+    {
+      title: "Występuje w",
+      dataIndex: "rpgSystemName",
+      key: "rpgSystemName",
+      align: "center",
+      render: (text) => <Text>{text}</Text>,
     },
     {
       title: "Opublikowany",
@@ -52,26 +58,27 @@ export const PlayersTable: React.FC = () => {
       align: "center",
       render: (isPublished) => (isPublished ? "Tak" : "Nie"),
     },
+
     {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { playerId }) => (
+      render: (text, { characterId }) => (
         <>
           <Button
             type="default"
-            key={playerId}
+            key={characterId}
             style={{ marginRight: 10 }}
             onClick={() =>
-              navigate("editPlayer", { playerId: playerId.toString() })
+              navigate("editCharacter", { id: characterId.toString() })
             }
           >
             <EditOutlined />
           </Button>
-          <DeleteButton<playerIdParam>
-            payload={{ playerId: playerId.toString() }}
+          <DeleteButton<characterIdParam>
             mutateAsync={mutateAsync}
-            status={DeleteStatus}
+            payload={{ characterId: characterId.toString() }}
+            status={deleteStatus}
           />
         </>
       ),
@@ -85,7 +92,7 @@ export const PlayersTable: React.FC = () => {
     <Table
       columns={columns}
       dataSource={data.items}
-      rowKey={(item) => item.playerId}
+      rowKey={(item) => item.characterId}
       pagination={buildPagination(data, setPage)}
     />
   );

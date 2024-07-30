@@ -12,8 +12,10 @@ import { stringifyParams } from "../api/utils/api";
 import Error404 from "../pages/Error404";
 import Dashboard from "../pages/Dashboard";
 import { Private } from "./PrivateRoute";
-import { Players } from "../pages/Players/Players";
-import { PlayerEdit } from "../pages/Players/PlayerEdit";
+import { Players } from "../pages/Player/Players";
+import { PlayerEdit } from "../pages/Player/PlayerEdit";
+import { Characters } from "../pages/Character/Characters";
+import { CharacterEdit } from "../pages/Character/CharacterEdit";
 
 export const APP_ROUTES = {
   main: "/",
@@ -101,6 +103,14 @@ export const routes: (RouteObject & { path: Route })[] = [
   {
     path: "/players/:playerId/edit",
     element: <Private element={PlayerEdit} />,
+  },
+  {
+    path: "/characters",
+    element: <Private element={Characters} />,
+  },
+  {
+    path: "/characters/:id/edit",
+    element: <Private element={CharacterEdit} />,
   },
   {
     path: "*",

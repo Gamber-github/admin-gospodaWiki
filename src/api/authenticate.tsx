@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   authenticateResponseSchema,
   userResponseSchema,
-} from "./responseSchemas";
+} from "./utils/ResponseSchema/responseSchemas";
 import { makeAdminGet, makeAdminPost } from "./utils/api";
 
 type AuthenticatePayload = {
