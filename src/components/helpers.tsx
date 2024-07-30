@@ -1,12 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 
+export const DEFAULT_TABLE_SIZE = 10;
 export const buildPagination = (
   data: { pageSize: number; totalItemCount: number },
   setPage: Dispatch<SetStateAction<number>>
 ) => {
-  return data.totalItemCount > 10
+  return data.totalItemCount > DEFAULT_TABLE_SIZE
     ? {
-        pagesize: data.pageSize,
+        pageSize: data.pageSize,
         total: data.totalItemCount,
         onChange: setPage,
         showSizeChanger: false,

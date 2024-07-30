@@ -12,7 +12,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { AuthUser } from "../utils/domain";
-import { AuthenticateResponse } from "../api/responseSchemas";
+import { AuthenticateResponse } from "../api/utils/ResponseSchema/responseSchemas";
 import { usePersistedState } from "../hooks/usePersistedState";
 import { useAuthenticate, useGetAuthenticatedUser } from "../api/authenticate";
 import { TokenManager } from "./TokenManager";

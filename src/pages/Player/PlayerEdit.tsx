@@ -13,7 +13,7 @@ export const PlayerEdit = () => {
     return <StatusAsyncHelper status={status} error={error} />;
 
   return (
-    <WhiteTile title="Edit Player">
+    <WhiteTile title="Edutuj gracza">
       <PlayerDetails data={data} />
     </WhiteTile>
   );

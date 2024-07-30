@@ -77,6 +77,62 @@ export const seriesResponseSchema = z.object({
 export const seriesListResponseSchema =
   buildListEndpointSchema(seriesResponseSchema);
 
+export const charactersListResponseSchema = z.object({
+  characterId: z.number(),
+  fullName: z.string(),
+  seriesName: z.string(),
+  rpgSystemName: z.string(),
+  isPublished: z.boolean(),
+});
+
+export const charactersResponseSchema = buildListEndpointSchema(
+  charactersListResponseSchema
+);
+
+export const serieReferenceSchema = z.object({
+  seriesId: z.number(),
+  name: z.string(),
+});
+
+export const itemsReferenseSchema = z.object({
+  itemId: z.number(),
+  name: z.string(),
+});
+
+export const characterDetailsResponseSchema = z.object({
+  characterId: z.number(),
+  firstName: z.string(),
+  lastName: z.string(),
+  imagePath: z.string().optional(),
+  age: z.number().optional(),
+  description: z.string().optional(),
+  series: serieReferenceSchema,
+  rpgSystem: rpgSystemReferenceSchema,
+  isPublished: z.boolean(),
+  tags: z.array(tagsResponseSchema),
+  items: z.array(itemsReferenseSchema),
+});
+
+export const rpgSystemsResponseSchema = z.object({
+  rpgSystemId: z.number(),
+  name: z.string(),
+  isPublished: z.boolean(),
+});
+
+export const RpgSystemsListResponseSchema = buildListEndpointSchema(
+  rpgSystemsResponseSchema
+);
+
+export const ItemsReferenceListResponseSchema =
+  buildListEndpointSchema(itemsReferenseSchema);
+
+export const TagsReferenceListResponseSchema =
+  buildListEndpointSchema(tagsResponseSchema);
+
+export type CharacterDetailsResponseSchema = z.infer<
+  typeof characterDetailsResponseSchema
+>;
+
 export type SeriesResponseSchema = z.infer<typeof seriesResponseSchema>;
 
 export type PlayerDetailsResponseSchema = z.infer<

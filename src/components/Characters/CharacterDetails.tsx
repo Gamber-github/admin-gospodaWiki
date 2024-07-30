@@ -1,22 +1,27 @@
 import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
-import { PlayerDetailsResponseSchema } from "../../api/utils/ResponseSchema/responseSchemas";
+import { CharacterDetailsResponseSchema } from "../../api/utils/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
 import styled from "styled-components";
 import Button from "antd/es/button";
 import Modal from "antd/es/modal";
-import { EditPlayerForm } from "./EditPlayerForm";
+
 import { useModalProps } from "../../hooks/useModalProps";
 import Popconfirm from "antd/es/popconfirm";
-import { usePublishPlayer } from "../../api/players";
 import message from "antd/es/message";
+import { usePublishCharacter } from "../../api/characters";
+import { EditCharacterForm } from "./EditCharacterForm";
 
-export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
-  data,
-}) => {
+export const CharacterDetails: React.FC<{
+  data: CharacterDetailsResponseSchema;
+}> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const { mutateAsync, error, status } = usePublishPlayer();
+  const {
+    mutateAsync: publishMutateAsync,
+    error,
+    status,
+  } = usePublishCharacter();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -46,25 +51,46 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
     },
     {
       key: "5",
-      label: "Serie",
+      label: "Występuje w serii",
+      children: <p>{data.series.name}</p>,
+    },
+    {
+      key: "6",
+      label: "System RPG",
+      children: <p>{data.rpgSystem.name}</p>,
+    },
+    {
+      key: "7",
+      label: "Posiadane przedmioty",
       children: (
         <>
-          {data.series.map((serie, key) => (
-            <p key={key}>{serie.name}</p>
+          {data.items.map((item, key) => (
+            <p key={key}>{item.name}</p>
           ))}
         </>
       ),
     },
     {
-      key: "6",
-      label: "O mnie",
-      children: <p>{data.about}</p>,
+      key: "8",
+      label: "Tagi",
+      children: (
+        <>
+          {data.tags.map((tag, key) => (
+            <p key={key}>{tag.name}</p>
+          ))}
+        </>
+      ),
+    },
+    {
+      key: "",
+      label: "Opis",
+      children: <p>{data.description}</p>,
     },
   ];
 
   const publish = () => {
     try {
-      mutateAsync({ playerId: data.playerId.toString() });
+      publishMutateAsync({ characterId: data.characterId.toString() });
       message.success("Gracz zaktualizowany");
     } catch (error) {
       message.error("Coś poszło nie tak");
@@ -74,7 +100,7 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
   return (
     <Conatiner>
       <Descriptions
-        title="Dane gracza"
+        title="Dane postaci"
         items={items}
         bordered
         column={3}
@@ -106,7 +132,7 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
           onCancel={closeModal}
           width={900}
         >
-          <EditPlayerForm onSubmit={closeModal} playerData={data} />
+          <EditCharacterForm onSubmit={closeModal} characterData={data} />
         </Modal>
       )}
     </Conatiner>

@@ -17,7 +17,7 @@ import {
   emptySchema,
   playerDetailsResponseSchema,
   playersListResponseSchema,
-} from "./responseSchemas";
+} from "./utils/ResponseSchema/responseSchemas";
 import { EmptyObject } from "react-hook-form";
 
 export type playerIdParam = {
@@ -25,18 +25,18 @@ export type playerIdParam = {
 };
 
 //GET PLAYERS
-type GetPlayers = BuildGetArgs<undefined, OptionalPageParams>;
+type GetPlayers = BuildGetArgs<object, OptionalPageParams>;
 
-const getPlayers = async ({ queryParams }: GetPlayers) =>
+const getPlayers = async (queryParams: GetPlayers["queryParams"]) =>
   makeAdminGet(
-    `Player${stringifyParams(queryParams)}`,
+    `player${stringifyParams(queryParams)}`,
     playersListResponseSchema
   );
 
-export const usePlayers = (queryParams: GetPlayers["queryParams"] = {}) =>
+export const useGetPlayers = (queryParams: GetPlayers["queryParams"] = {}) =>
   useQuery({
-    queryKey: ["player"],
-    queryFn: () => getPlayers({ queryParams }),
+    queryKey: ["player", queryParams],
+    queryFn: () => getPlayers(queryParams),
   });
 
 //GET PLAYER
@@ -44,7 +44,7 @@ export const usePlayers = (queryParams: GetPlayers["queryParams"] = {}) =>
 type GetPlayer = BuildGetArgs<{ playerId: string }>;
 
 const getPlayer = ({ playerId }: GetPlayer) =>
-  makeAdminGet(`Player/${playerId}`, playerDetailsResponseSchema);
+  makeAdminGet(`player/${playerId}`, playerDetailsResponseSchema);
 
 export const useGetPlayer = (playerId: string) =>
   useQuery({
@@ -75,17 +75,20 @@ export const useAddPlayer = () => {
 
 //PUBLISH PLAYER
 
-export const PublishPlayer = (playerId: string) =>
-  makeAdminPatch(`Player/${playerId}/publish`, emptySchema);
+type PublishPlayer = BuildUpdateArgs<EmptyObject, playerIdParam>;
 
-export const usePublishPlayer = (playerId: string) => {
+export const PublishPlayer = ({ playerId, payload }: PublishPlayer) =>
+  makeAdminPatch(`Player/${playerId}/publish`, emptySchema, payload);
+
+export const usePublishPlayer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => PublishPlayer(playerId),
+    mutationFn: ({ playerId }: playerIdParam) =>
+      PublishPlayer({ playerId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["player"] });
-      queryClient.invalidateQueries({ queryKey: ["player", playerId] });
+      queryClient.invalidateQueries({ queryKey: ["player"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["players"], exact: false });
     },
   });
 };

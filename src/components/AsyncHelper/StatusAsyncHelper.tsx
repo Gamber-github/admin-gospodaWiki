@@ -3,7 +3,7 @@ import { arrify } from "../../utils/object";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Spinner } from "../UI/Spinner/Spinner";
 
-type Status = "success" | "loading" | "error" | "idle";
+export type Status = "success" | "loading" | "error" | "idle";
 
 const DEFAULT_ERROR_TEXT = "Wystąpił błąd.";
 

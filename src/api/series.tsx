@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { seriesListResponseSchema } from "./responseSchemas";
+import { seriesListResponseSchema } from "./utils/ResponseSchema/responseSchemas";
 import { makeAdminGet, stringifyParams } from "./utils/api";
 import { BuildGetArgs, OptionalPageParams } from "./utils/types";
 
