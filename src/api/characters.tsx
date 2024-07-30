@@ -33,7 +33,9 @@ const getCharacters = (queryParams: GetCharacters["queryParams"]) =>
     charactersResponseSchema
   );
 
-export const useGetCharacters = (queryParams: GetCharacters["queryParams"] = {}) =>
+export const useGetCharacters = (
+  queryParams: GetCharacters["queryParams"] = {}
+) =>
   useQuery({
     queryKey: ["characters", queryParams],
     queryFn: () => getCharacters(queryParams),
@@ -106,7 +108,6 @@ export const usePublishCharacter = () => {
 export type EditCharacterPayload = {
   firstName: string;
   lastName: string;
-  imagePath: string;
   age: number;
   description: string;
   seriesId: number;
