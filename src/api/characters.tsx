@@ -17,7 +17,7 @@ import {
   characterDetailsResponseSchema,
   charactersResponseSchema,
   emptySchema,
-} from "./utils/ResponseSchema/responseSchemas";
+} from "./ResponseSchema/responseSchemas";
 import { EmptyObject } from "react-hook-form";
 
 export type characterIdParam = {
@@ -33,7 +33,9 @@ const getCharacters = (queryParams: GetCharacters["queryParams"]) =>
     charactersResponseSchema
   );
 
-export const useGetCharacters = (queryParams: GetCharacters["queryParams"] = {}) =>
+export const useGetCharacters = (
+  queryParams: GetCharacters["queryParams"] = {}
+) =>
   useQuery({
     queryKey: ["characters", queryParams],
     queryFn: () => getCharacters(queryParams),
@@ -106,7 +108,6 @@ export const usePublishCharacter = () => {
 export type EditCharacterPayload = {
   firstName: string;
   lastName: string;
-  imagePath: string;
   age: number;
   description: string;
   seriesId: number;
@@ -139,7 +140,6 @@ export const useEditCharacter = (characterId: string) => {
 export type NewCharacterPayload = {
   firstName: string;
   lastName: string;
-  imagePath: string;
   age: number;
   description: string;
   seriesId: number;

@@ -6,7 +6,7 @@ import { z } from "zod";
 import Title from "antd/es/typography/Title";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
-import { CharacterDetailsResponseSchema } from "../../api/utils/ResponseSchema/responseSchemas";
+import { CharacterDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import { useEditCharacter } from "../../api/characters";
 import { CustomSelection } from "../UI/Select/CustomSelection";
 import { useGetSeries } from "../../api/series";
