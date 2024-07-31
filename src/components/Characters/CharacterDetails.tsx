@@ -1,6 +1,6 @@
 import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
-import { CharacterDetailsResponseSchema } from "../../api/utils/ResponseSchema/responseSchemas";
+import { CharacterDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
 import styled from "styled-components";
 import Button from "antd/es/button";

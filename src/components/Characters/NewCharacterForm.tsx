@@ -12,9 +12,8 @@ import TextArea from "antd/es/input/TextArea";
 export const newCharacterSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
-  imagePath: z.string().optional(),
-  age: z.number().optional(),
-  description: z.string().optional(),
+  age: z.number(),
+  description: z.string(),
   seriesId: z.number(),
   rpgSystemId: z.number(),
 });

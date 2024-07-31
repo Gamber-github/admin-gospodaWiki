@@ -16,6 +16,8 @@ import { Players } from "../pages/Player/Players";
 import { PlayerEdit } from "../pages/Player/PlayerEdit";
 import { Characters } from "../pages/Character/Characters";
 import { CharacterEdit } from "../pages/Character/CharacterEdit";
+import { RpgSystems } from "../pages/RpgSystems/RpgSystems";
+import { RpgSystemEdit } from "../pages/RpgSystems/RpgSystemEdit";
 
 export const APP_ROUTES = {
   main: "/",
@@ -111,6 +113,14 @@ export const routes: (RouteObject & { path: Route })[] = [
   {
     path: "/characters/:id/edit",
     element: <Private element={CharacterEdit} />,
+  },
+  {
+    path: "/rpg-systems",
+    element: <Private element={RpgSystems} />,
+  },
+  {
+    path: "/rpg-systems/:id/edit",
+    element: <Private element={RpgSystemEdit} />,
   },
   {
     path: "*",

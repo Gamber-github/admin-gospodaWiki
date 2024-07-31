@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { makeAdminGet, stringifyParams } from "./utils/api";
-import { TagsReferenceListResponseSchema } from "./utils/ResponseSchema/responseSchemas";
+import { TagsReferenceListResponseSchema } from "./ResponseSchema/responseSchemas";
 import { BuildGetArgs, OptionalPageParams } from "./utils/types";
 
 //GET TAGS

@@ -17,7 +17,7 @@ import {
   emptySchema,
   playerDetailsResponseSchema,
   playersListResponseSchema,
-} from "./utils/ResponseSchema/responseSchemas";
+} from "./ResponseSchema/responseSchemas";
 import { EmptyObject } from "react-hook-form";
 
 export type playerIdParam = {
@@ -43,7 +43,7 @@ export const useGetPlayers = (queryParams: GetPlayers["queryParams"] = {}) =>
 
 type GetPlayer = BuildGetArgs<{ playerId: string }>;
 
-const getPlayer = ({ playerId }: GetPlayer) =>
+const getPlayer = async ({ playerId }: GetPlayer) =>
   makeAdminGet(`player/${playerId}`, playerDetailsResponseSchema);
 
 export const useGetPlayer = (playerId: string) =>
@@ -59,7 +59,7 @@ export type NewPlayerPayload = {
   lastName: string;
 };
 
-export const addPlayer = async (payload: NewPlayerPayload) =>
+const addPlayer = async (payload: NewPlayerPayload) =>
   makeAdminPost("Player", emptySchema, payload);
 
 export const useAddPlayer = () => {
@@ -68,7 +68,7 @@ export const useAddPlayer = () => {
   return useMutation({
     mutationFn: (payload: NewPlayerPayload) => addPlayer(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["player"] });
+      queryClient.invalidateQueries({ queryKey: ["players"] });
     },
   });
 };
@@ -77,7 +77,7 @@ export const useAddPlayer = () => {
 
 type PublishPlayer = BuildUpdateArgs<EmptyObject, playerIdParam>;
 
-export const PublishPlayer = ({ playerId, payload }: PublishPlayer) =>
+export const PublishPlayer = async ({ playerId, payload }: PublishPlayer) =>
   makeAdminPatch(`Player/${playerId}/publish`, emptySchema, payload);
 
 export const usePublishPlayer = () => {
@@ -132,7 +132,7 @@ export const useDeletePlayer = () => {
     mutationFn: ({ playerId }: playerIdParam) =>
       deletePlayer({ playerId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["player"] });
+      queryClient.invalidateQueries({ queryKey: ["players"] });
     },
   });
 };

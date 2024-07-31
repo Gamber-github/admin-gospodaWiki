@@ -4,7 +4,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEditPlayer } from "../../api/players";
-import { PlayerDetailsResponseSchema } from "../../api/utils/ResponseSchema/responseSchemas";
+import { PlayerDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Title from "antd/es/typography/Title";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
