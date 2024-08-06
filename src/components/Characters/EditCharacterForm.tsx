@@ -43,7 +43,7 @@ export const EditCharacterForm: React.FC<{
       lastName: characterData.lastName,
       age: characterData.age,
       description: characterData.description,
-      seriesId: characterData.series.seriesId,
+      seriesId: characterData.series?.seriesId ?? 0,
       rpgSystemId: characterData.rpgSystem.rpgSystemId,
       tagsId: characterData.tags.map((tag) => tag.tagId),
       itemsId: characterData.items.map((item) => item.itemId),
@@ -173,8 +173,8 @@ export const EditCharacterForm: React.FC<{
               {...field}
               data={[
                 {
-                  valueId: characterData.series.seriesId,
-                  name: characterData.series.name,
+                  valueId: characterData.series?.seriesId ?? 0,
+                  name: characterData.series?.name ?? "",
                 },
               ]}
               onChange={field.onChange}

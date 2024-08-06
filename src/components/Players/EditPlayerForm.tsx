@@ -123,8 +123,8 @@ export const EditPlayerForm: React.FC<{
               error={seriesError}
               status={seriesStatus}
               {...field}
-              data={mappedSeries.map((item) => ({
-                valueId: item.valueId,
+              data={playerData.series.map((item) => ({
+                valueId: item.seriesId,
                 name: item.name,
               }))}
               onChange={field.onChange}
