@@ -104,9 +104,9 @@ export const characterDetailsResponseSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   imagePath: z.string().optional(),
-  age: z.number(),
-  description: z.string(),
-  series: serieReferenceSchema,
+  age: z.number().optional(),
+  description: z.string().optional(),
+  series: serieReferenceSchema.optional(),
   rpgSystem: rpgSystemReferenceSchema,
   isPublished: z.boolean(),
   tags: z.array(tagsResponseSchema),
@@ -145,6 +145,23 @@ export const rpgSystemDetailsResponseSchema = z.object({
   series: z.array(serieReferenceSchema),
   stories: z.array(storyReferenceResponseSchema),
 });
+
+export const serieDetailsResponseSchema = z.object({
+  seriesId: z.number(),
+  name: z.string(),
+  description: z.string(),
+  isPublished: z.boolean(),
+  tags: z.array(tagsResponseSchema).optional(),
+  players: z.array(playerReferenceSchema).optional(),
+  characters: z.array(characterReferenceSchema).optional(),
+  rpgSystem: rpgSystemReferenceSchema.optional(),
+  youtubePlaylistId: z.string(),
+  gameMaster: playerReferenceSchema.optional(),
+});
+
+export type SerieDetailsResponseSchema = z.infer<
+  typeof serieDetailsResponseSchema
+>;
 
 export type RpgSystemDetailsResponseSchema = z.infer<
   typeof rpgSystemDetailsResponseSchema

@@ -1,6 +1,6 @@
 import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
-import { CharacterDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+import { SerieDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
 import styled from "styled-components";
 import Button from "antd/es/button";
@@ -9,38 +9,24 @@ import Modal from "antd/es/modal";
 import { useModalProps } from "../../hooks/useModalProps";
 import Popconfirm from "antd/es/popconfirm";
 import message from "antd/es/message";
-import { usePublishCharacter } from "../../api/characters";
-import { EditCharacterForm } from "./EditCharacterForm";
+import { usePublishSerie } from "../../api/series";
+import { EditSerieForm } from "./EditSerieForm";
 
-export const CharacterDetails: React.FC<{
-  data: CharacterDetailsResponseSchema;
+export const SerieDetails: React.FC<{
+  data: SerieDetailsResponseSchema;
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const {
-    mutateAsync: publishMutateAsync,
-    error,
-    status,
-  } = usePublishCharacter();
+  const { mutateAsync: publishMutateAsync, error, status } = usePublishSerie();
 
   const items: DescriptionsProps["items"] = [
     {
       key: "1",
-      label: "Imię",
-      children: <p>{data.firstName}</p>,
+      label: "Nazwa",
+      children: <p>{data.name}</p>,
     },
     {
       key: "2",
-      label: "Nazwisko",
-      children: <p>{data.lastName}</p>,
-    },
-    {
-      key: "3",
-      label: "Wiek",
-      children: <p>{data.age ? data.age : ""}</p>,
-    },
-    {
-      key: "4",
       label: "Opublikowany",
       children: (
         <Badge
@@ -50,39 +36,66 @@ export const CharacterDetails: React.FC<{
       ),
     },
     {
-      key: "5",
-      label: "Występuje w serii",
-      children: <p>{data.series ? data.series.name : ""}</p>,
-    },
-    {
-      key: "6",
+      key: "3",
       label: "System RPG",
-      children: <p>{data.rpgSystem.name}</p>,
+      children: <p>{data.rpgSystem ? data.rpgSystem.name : ""}</p>,
     },
     {
-      key: "7",
-      label: "Posiadane przedmioty",
-      children: (
-        <>
-          {data.items.map((item, key) => (
-            <p key={key}>{item.name}</p>
-          ))}
-        </>
-      ),
+      key: "9",
+      label: "Playlist Youtube ID",
+      children: <p>{data.youtubePlaylistId ? data.youtubePlaylistId : ""}</p>,
     },
     {
       key: "8",
-      label: "Tagi",
+      label: "Mistrz Gry",
+      children: (
+        <p>
+          {data.gameMaster
+            ? data.gameMaster.firstName + " " + data.gameMaster.lastName
+            : ""}
+        </p>
+      ),
+    },
+    {
+      key: "4",
+      label: "Powiązani gracze",
       children: (
         <>
-          {data.tags.map((tag, key) => (
-            <p key={key}>{tag.name}</p>
-          ))}
+          {data.players &&
+            data.players.map((player) => (
+              <p key={player.playerId}>
+                {player.firstName + " " + player.lastName}
+              </p>
+            ))}
         </>
       ),
     },
     {
-      key: "",
+      key: "5",
+      label: "Powiązane postacie",
+      children: (
+        <>
+          {data.characters &&
+            data.characters.map((character) => (
+              <p key={character.characterId}>
+                {character.firstName + " " + character.lastName}
+              </p>
+            ))}
+        </>
+      ),
+    },
+    {
+      key: "6",
+      label: "Tagi",
+      children: (
+        <>
+          {data.tags &&
+            data.tags.map((tag, key) => <p key={key}>{tag.name}</p>)}
+        </>
+      ),
+    },
+    {
+      key: "7",
       label: "Opis",
       children: <p>{data.description}</p>,
     },
@@ -90,8 +103,8 @@ export const CharacterDetails: React.FC<{
 
   const publish = () => {
     try {
-      publishMutateAsync({ characterId: data.characterId.toString() });
-      message.success("Gracz zaktualizowany");
+      publishMutateAsync({ serieId: data.seriesId.toString() });
+      message.success("System zaktualizowany");
     } catch (error) {
       message.error("Coś poszło nie tak");
     }
@@ -100,7 +113,7 @@ export const CharacterDetails: React.FC<{
   return (
     <Conatiner>
       <Descriptions
-        title="Dane postaci"
+        title="Seria"
         items={items}
         bordered
         column={3}
@@ -132,7 +145,7 @@ export const CharacterDetails: React.FC<{
           onCancel={closeModal}
           width={900}
         >
-          <EditCharacterForm onSubmit={closeModal} characterData={data} />
+          <EditSerieForm onSubmit={closeModal} serieData={data} />
         </Modal>
       )}
     </Conatiner>
