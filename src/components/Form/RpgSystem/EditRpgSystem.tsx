@@ -6,10 +6,10 @@ import { z } from "zod";
 import Title from "antd/es/typography/Title";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
-import { CustomSelection } from "../UI/Select/CustomSelection";
-import { useEditRpgSystem } from "../../api/rpgSystems";
-import { RpgSystemDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
-import { useGetTags } from "../../api/tags";
+import { CustomSelection } from "../../UI/Select/CustomSelection";
+import { useEditRpgSystem } from "../../../api/rpgSystems";
+import { RpgSystemDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
+import { useGetTags } from "../../../api/tags";
 
 export const editRpgSystemSchema = z.object({
   rpgSystemId: z.number(),

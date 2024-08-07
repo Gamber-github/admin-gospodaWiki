@@ -4,43 +4,43 @@ import Title from "antd/es/typography/Title";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import TextArea from "antd/es/input/TextArea";
-import { useAddSerie } from "../../api/series";
+import { useCreateItem } from "../../../api/items";
 
-export const newSerieSchema = z.object({
+export const newItemSchema = z.object({
   name: z.string(),
   description: z.string(),
-  youtubePlaylistId: z.string(),
 });
 
-type NewSerieSchemaType = z.infer<typeof newSerieSchema>;
+type NewItemSchemaType = z.infer<typeof newItemSchema>;
 
-export const NewSerieForm: React.FC<{
+export const NewItemForm: React.FC<{
   onSubmit: () => void;
 }> = ({ onSubmit }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<NewSerieSchemaType>({
-    resolver: zodResolver(newSerieSchema),
+  } = useForm<NewItemSchemaType>({
+    resolver: zodResolver(newItemSchema),
     reValidateMode: "onSubmit",
   });
 
-  const { mutateAsync: AddMutation } = useAddSerie();
+  const { mutateAsync: AddMutation } = useCreateItem();
 
-  const submit = (payload: NewSerieSchemaType) => {
+  const submit = async (payload: NewItemSchemaType) => {
     try {
-      AddMutation(payload);
+      await AddMutation(payload);
       onSubmit();
-      message.success("Seria pomyślnie dodana");
     } catch (error) {
-      message.error(`Nie udało się dodać serii. Spróbuj ponownie`);
+      message.error(`Nie udało się dodać rekordu. Spróbuj ponownie`);
     }
   };
 
   return (
     <Form onSubmitCapture={handleSubmit(submit)}>
-      <Title style={{ marginBottom: "1rem" }}>Dodaj nową serię</Title>
+      <Title style={{ marginBottom: "1rem" }}>
+        Dodaj nowy przedmiot fabularny
+      </Title>
       <Form.Item
         name="name"
         rules={[{ required: true }]}
@@ -50,26 +50,14 @@ export const NewSerieForm: React.FC<{
         <Controller
           name="name"
           control={control}
-          render={({ field }) => <Input placeholder="Nazwa serii" {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
-        name="youtubePlaylistId"
-        rules={[{ required: true, message: "Podaj ID playlisty na Youtube" }]}
-        help={errors.youtubePlaylistId?.message as string}
-        validateStatus={errors.youtubePlaylistId ? "error" : ""}
-      >
-        <Controller
-          name="youtubePlaylistId"
-          control={control}
           render={({ field }) => (
-            <Input placeholder="Podaj ID listy na Youtube" {...field} />
+            <Input placeholder="Nazwa przedmiotu" {...field} />
           )}
         />
       </Form.Item>
       <Form.Item
         name="description"
-        rules={[{ required: true, message: "Podaj opis serii" }]}
+        rules={[{ required: true, message: "Podaj opis przedmiotu" }]}
         help={errors.description?.message as string}
         validateStatus={errors.description ? "error" : ""}
       >

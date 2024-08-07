@@ -1,8 +1,6 @@
 import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
-import {
-  RpgSystemDetailsResponseSchema,
-} from "../../api/ResponseSchema/responseSchemas";
+import { SerieDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
 import styled from "styled-components";
 import Button from "antd/es/button";
@@ -11,19 +9,15 @@ import Modal from "antd/es/modal";
 import { useModalProps } from "../../hooks/useModalProps";
 import Popconfirm from "antd/es/popconfirm";
 import message from "antd/es/message";
-import { usePublishRpgSystem } from "../../api/rpgSystems";
-import { EditRpgSystemForm } from "./EditRpgSystem";
+import { usePublishSerie } from "../../api/series";
+import { EditSerieForm } from "../Form/Serie/EditSerieForm";
 
-export const RpgSystemDetails: React.FC<{
-  data: RpgSystemDetailsResponseSchema;
+export const SerieDetails: React.FC<{
+  data: SerieDetailsResponseSchema;
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const {
-    mutateAsync: publishMutateAsync,
-    error,
-    status,
-  } = usePublishRpgSystem();
+  const { mutateAsync: publishMutateAsync, error, status } = usePublishSerie();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -32,7 +26,7 @@ export const RpgSystemDetails: React.FC<{
       children: <p>{data.name}</p>,
     },
     {
-      key: "4",
+      key: "2",
       label: "Opublikowany",
       children: (
         <Badge
@@ -42,53 +36,66 @@ export const RpgSystemDetails: React.FC<{
       ),
     },
     {
-      key: "2",
-      label: "Powiązane historie",
+      key: "3",
+      label: "System RPG",
+      children: <p>{data.rpgSystem ? data.rpgSystem.name : ""}</p>,
+    },
+    {
+      key: "9",
+      label: "Playlist Youtube ID",
+      children: <p>{data.youtubePlaylistId ? data.youtubePlaylistId : ""}</p>,
+    },
+    {
+      key: "8",
+      label: "Mistrz Gry",
+      children: (
+        <p>
+          {data.gameMaster
+            ? data.gameMaster.firstName + " " + data.gameMaster.lastName
+            : ""}
+        </p>
+      ),
+    },
+    {
+      key: "4",
+      label: "Powiązani gracze",
       children: (
         <>
-          {data.stories.map((story) => (
-            <p key={story.storyId}>{story.name}</p>
-          ))}
+          {data.players &&
+            data.players.map((player) => (
+              <p key={player.playerId}>
+                {player.firstName + " " + player.lastName}
+              </p>
+            ))}
         </>
       ),
     },
     {
       key: "5",
-      label: "Powiązane serie",
+      label: "Powiązane postacie",
       children: (
         <>
-          {data.series.map((serie) => (
-            <p key={serie.seriesId}>{serie.name}</p>
-          ))}
+          {data.characters &&
+            data.characters.map((character) => (
+              <p key={character.characterId}>
+                {character.firstName + " " + character.lastName}
+              </p>
+            ))}
         </>
       ),
     },
     {
       key: "6",
-      label: "Powiązane postacie",
+      label: "Tagi",
       children: (
         <>
-          {data.characters.map((character) => (
-            <p key={character.characterId}>
-              {character.firstName + " " + character.lastName}
-            </p>
-          ))}
+          {data.tags &&
+            data.tags.map((tag, key) => <p key={key}>{tag.name}</p>)}
         </>
       ),
     },
     {
       key: "7",
-      label: "Tagi",
-      children: (
-        <>
-          {data.tags.map((tag, key) => (
-            <p key={key}>{tag.name}</p>
-          ))}
-        </>
-      ),
-    },
-    {
-      key: "",
       label: "Opis",
       children: <p>{data.description}</p>,
     },
@@ -96,7 +103,7 @@ export const RpgSystemDetails: React.FC<{
 
   const publish = () => {
     try {
-      publishMutateAsync({ rpgSystemId: data.rpgSystemId.toString() });
+      publishMutateAsync({ serieId: data.seriesId.toString() });
       message.success("System zaktualizowany");
     } catch (error) {
       message.error("Coś poszło nie tak");
@@ -106,7 +113,7 @@ export const RpgSystemDetails: React.FC<{
   return (
     <Conatiner>
       <Descriptions
-        title="System RPG"
+        title="Seria"
         items={items}
         bordered
         column={3}
@@ -138,7 +145,7 @@ export const RpgSystemDetails: React.FC<{
           onCancel={closeModal}
           width={900}
         >
-          <EditRpgSystemForm onSubmit={closeModal} rpgSystemData={data} />
+          <EditSerieForm onSubmit={closeModal} serieData={data} />
         </Modal>
       )}
     </Conatiner>

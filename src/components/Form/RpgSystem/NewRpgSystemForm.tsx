@@ -3,8 +3,8 @@ import { Button, Form, Input, message } from "antd";
 import Title from "antd/es/typography/Title";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAddRpgSystem } from "../../api/rpgSystems";
 import TextArea from "antd/es/input/TextArea";
+import { useAddRpgSystem } from "../../../api/rpgSystems";
 
 export const newRpgSystemSchema = z.object({
   name: z.string(),

@@ -3,23 +3,23 @@ import { Container } from "../../components/UI/CustomStyles/CustomStyles";
 import { useModalProps } from "../../hooks/useModalProps";
 import { UserAddOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { CharactersTable } from "../../components/Table/CharactersTable";
-import { NewCharacterForm } from "../../components/Form/Character/NewCharacterForm";
+import { ItemsTable } from "../../components/Table/ItemsTable";
+import { NewItemForm } from "../../components/Form/Item/NewItemForm";
 
-export const Characters = () => {
+export const Items = () => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
   return (
     <Container>
       <ButtonContainer>
         <Button onClick={showModal}>
-          <UserAddOutlined /> Dodaj nową postać
+          <UserAddOutlined /> Dodaj nowy przedmiot fabularny
         </Button>
       </ButtonContainer>
-      <CharactersTable />
+      <ItemsTable />
       {isModalOpen && (
         <Modal onClose={closeModal} open footer={null} onCancel={closeModal}>
-          <NewCharacterForm onSubmit={closeModal} />
+          <NewItemForm onSubmit={closeModal} />
         </Modal>
       )}
     </Container>

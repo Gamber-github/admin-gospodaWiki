@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Spinner: React.FC = () => {
   return (
     <Wrapper>
-      <div></div>
-      <div></div>
+      <div>LOADING</div>
+      <div>LOADING</div>
     </Wrapper>
   );
 };

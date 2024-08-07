@@ -3,10 +3,10 @@ import { Button, Form, Input, InputNumber, message } from "antd";
 import Title from "antd/es/typography/Title";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAddCharacter } from "../../api/characters";
-import { CustomSelection } from "../UI/Select/CustomSelection";
-import { useGetSeries } from "../../api/series";
-import { useGetRpgSystems } from "../../api/rpgSystems";
+import { useAddCharacter } from "../../../api/characters";
+import { useGetSeries } from "../../../api/series";
+import { useGetRpgSystems } from "../../../api/rpgSystems";
+import { CustomSelection } from "../../UI/Select/CustomSelection";
 import TextArea from "antd/es/input/TextArea";
 
 export const newCharacterSchema = z.object({

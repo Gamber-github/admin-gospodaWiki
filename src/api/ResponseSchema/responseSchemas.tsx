@@ -159,6 +159,34 @@ export const serieDetailsResponseSchema = z.object({
   gameMaster: playerReferenceSchema.optional(),
 });
 
+export const itemResponseSchema = z.object({
+  itemId: z.number(),
+  name: z.string(),
+  isPublished: z.boolean(),
+});
+
+export const ItemsResponseSchema = z.object({
+  items: z.array(itemResponseSchema),
+  totalItemCount: z.number(),
+  pageNumber: z.number(),
+  pageSize: z.number(),
+});
+
+export const itemDetailsResponseSchema = z.object({
+  itemId: z.number(),
+  name: z.string(),
+  description: z.string(),
+  imagePath: z.string().optional(),
+  characters: z.array(characterReferenceSchema),
+  ownerName: z.string().optional(),
+  tags: z.array(tagsResponseSchema),
+  isPublished: z.boolean(),
+});
+
+export type ItemDetailsResponseSchema = z.infer<
+  typeof itemDetailsResponseSchema
+>;
+
 export type SerieDetailsResponseSchema = z.infer<
   typeof serieDetailsResponseSchema
 >;

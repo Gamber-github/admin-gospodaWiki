@@ -85,7 +85,7 @@ export const useAddRpgSystem = () => {
 
 type GetRpgSystem = BuildGetArgs<{ rpgSystemId: string }>;
 
-const getRpgSystem = async ({ rpgSystemId }: GetRpgSystem) =>
+const getRpgSystem = ({ rpgSystemId }: GetRpgSystem) =>
   makeAdminGet(`RpgSystem/${rpgSystemId}`, rpgSystemDetailsResponseSchema);
 
 export const useGetRpgSystem = (rpgSystemId: string) =>
@@ -98,10 +98,7 @@ export const useGetRpgSystem = (rpgSystemId: string) =>
 
 type PublishRpgSystem = BuildUpdateArgs<EmptyObject, RpgSystemIdParam>;
 
-export const PublishRpgSystem = async ({
-  rpgSystemId,
-  payload,
-}: PublishRpgSystem) =>
+export const publishRpgSystem = ({ rpgSystemId, payload }: PublishRpgSystem) =>
   makeAdminPatch(`RpgSystem/${rpgSystemId}/publish`, emptySchema, payload);
 
 export const usePublishRpgSystem = () => {
@@ -109,10 +106,12 @@ export const usePublishRpgSystem = () => {
 
   return useMutation({
     mutationFn: ({ rpgSystemId }: RpgSystemIdParam) =>
-      PublishRpgSystem({ rpgSystemId, payload: {} }),
+      publishRpgSystem({ rpgSystemId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["rpgSystem"], exact: false });
-      queryClient.invalidateQueries({ queryKey: ["rpgSystems"], exact: false });
+      queryClient.invalidateQueries({
+        queryKey: ["rpgSystem"],
+        exact: false,
+      });
     },
   });
 };
@@ -128,10 +127,8 @@ export type EditRpgSystemPayload = {
   seriesIds: number[];
 };
 
-const editRpgSystem = async (
-  rpgSystemId: string,
-  payload: EditRpgSystemPayload
-) => makeAdminPut(`RpgSystem/${rpgSystemId}`, emptySchema, payload);
+const editRpgSystem = (rpgSystemId: string, payload: EditRpgSystemPayload) =>
+  makeAdminPut(`RpgSystem/${rpgSystemId}`, emptySchema, payload);
 
 export const useEditRpgSystem = (rpgSystemId: string) => {
   const queryClient = useQueryClient();

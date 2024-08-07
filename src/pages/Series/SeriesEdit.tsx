@@ -2,7 +2,7 @@ import { WhiteTile } from "../../components/WhiteTile/WhiteTile.tsx";
 import { usePageParams } from "../../hooks/usePageParams";
 import { StatusAsyncHelper } from "../../components/AsyncHelper/StatusAsyncHelper.tsx";
 import { useGetSerie } from "../../api/series.tsx";
-import { SerieDetails } from "../../components/Series/SerieDetails.tsx";
+import { SerieDetails } from "../../components/Details/SerieDetails.tsx";
 
 export const SeriesEdit = () => {
   const params = usePageParams("editRpgSystem");

@@ -3,15 +3,15 @@ import { Button, Form, InputNumber, message } from "antd";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEditPlayer } from "../../api/players";
-import { PlayerDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+import { useEditPlayer } from "../../../api/players";
+import { PlayerDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
 import Title from "antd/es/typography/Title";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
-import { CustomSelection } from "../UI/Select/CustomSelection";
-import { useGetSeries } from "../../api/series";
+import { CustomSelection } from "../../UI/Select/CustomSelection";
+import { useGetSeries } from "../../../api/series";
 
-export const editPlayerSchema = z.object({
+export const EditPlayerSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   age: z.number(),
@@ -19,7 +19,7 @@ export const editPlayerSchema = z.object({
   seriesId: z.array(z.number()),
 });
 
-type EditPlayerSchemaType = z.infer<typeof editPlayerSchema>;
+type EditPlayerSchemaType = z.infer<typeof EditPlayerSchema>;
 
 export const EditPlayerForm: React.FC<{
   onSubmit: () => void;
@@ -30,7 +30,7 @@ export const EditPlayerForm: React.FC<{
     handleSubmit,
     formState: { errors },
   } = useForm<EditPlayerSchemaType>({
-    resolver: zodResolver(editPlayerSchema),
+    resolver: zodResolver(EditPlayerSchema),
     reValidateMode: "onSubmit",
     defaultValues: {
       firstName: playerData.firstName,

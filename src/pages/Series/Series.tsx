@@ -4,8 +4,8 @@ import { Container } from "../../components/UI/CustomStyles/CustomStyles";
 import { useModalProps } from "../../hooks/useModalProps";
 import { UserAddOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { SerieTable } from "../../components/Series/SerieTable";
-import { NewSerieForm } from "../../components/Series/NewSerieForm";
+import { SerieTable } from "../../components/Table/SerieTable";
+import { NewSerieForm } from "../../components/Form/Serie/NewSerieForm";
 
 export const Series = () => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
