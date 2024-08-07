@@ -27,7 +27,7 @@ export type playerIdParam = {
 //GET PLAYERS
 type GetPlayers = BuildGetArgs<object, OptionalPageParams>;
 
-const getPlayers = async (queryParams: GetPlayers["queryParams"]) =>
+const getPlayers = (queryParams: GetPlayers["queryParams"]) =>
   makeAdminGet(
     `player${stringifyParams(queryParams)}`,
     playersListResponseSchema
@@ -35,7 +35,7 @@ const getPlayers = async (queryParams: GetPlayers["queryParams"]) =>
 
 export const useGetPlayers = (queryParams: GetPlayers["queryParams"] = {}) =>
   useQuery({
-    queryKey: ["player", queryParams],
+    queryKey: ["players"],
     queryFn: () => getPlayers(queryParams),
   });
 
@@ -43,7 +43,7 @@ export const useGetPlayers = (queryParams: GetPlayers["queryParams"] = {}) =>
 
 type GetPlayer = BuildGetArgs<{ playerId: string }>;
 
-const getPlayer = async ({ playerId }: GetPlayer) =>
+const getPlayer = ({ playerId }: GetPlayer) =>
   makeAdminGet(`player/${playerId}`, playerDetailsResponseSchema);
 
 export const useGetPlayer = (playerId: string) =>
@@ -59,7 +59,7 @@ export type NewPlayerPayload = {
   lastName: string;
 };
 
-const addPlayer = async (payload: NewPlayerPayload) =>
+const addPlayer = (payload: NewPlayerPayload) =>
   makeAdminPost("Player", emptySchema, payload);
 
 export const useAddPlayer = () => {
@@ -77,7 +77,7 @@ export const useAddPlayer = () => {
 
 type PublishPlayer = BuildUpdateArgs<EmptyObject, playerIdParam>;
 
-export const PublishPlayer = async ({ playerId, payload }: PublishPlayer) =>
+export const PublishPlayer = ({ playerId, payload }: PublishPlayer) =>
   makeAdminPatch(`Player/${playerId}/publish`, emptySchema, payload);
 
 export const usePublishPlayer = () => {
@@ -102,10 +102,8 @@ export type EditPlayerPayload = {
   about: string;
 };
 
-export const editPlayer = async (
-  playerId: string,
-  payload: EditPlayerPayload
-) => makeAdminPut(`Player/${playerId}`, emptySchema, payload);
+export const editPlayer = (playerId: string, payload: EditPlayerPayload) =>
+  makeAdminPut(`Player/${playerId}`, emptySchema, payload);
 
 export const useEditPlayer = (playerId: string) => {
   const queryClient = useQueryClient();
@@ -122,7 +120,7 @@ export const useEditPlayer = (playerId: string) => {
 
 type DeletePlayer = BuildUpdateArgs<EmptyObject, playerIdParam>;
 
-const deletePlayer = async ({ playerId, payload }: DeletePlayer) =>
+const deletePlayer = ({ playerId, payload }: DeletePlayer) =>
   makeAdminDelete(`Player/${playerId}`, emptySchema, payload);
 
 export const useDeletePlayer = () => {

@@ -1,6 +1,6 @@
 import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
-import { CharacterDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+import { RpgSystemDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
 import styled from "styled-components";
 import Button from "antd/es/button";
@@ -9,11 +9,11 @@ import Modal from "antd/es/modal";
 import { useModalProps } from "../../hooks/useModalProps";
 import Popconfirm from "antd/es/popconfirm";
 import message from "antd/es/message";
-import { usePublishCharacter } from "../../api/characters";
-import { EditCharacterForm } from "./EditCharacterForm";
+import { usePublishRpgSystem } from "../../api/rpgSystems";
+import { EditRpgSystemForm } from "../Form/RpgSystem/EditRpgSystem";
 
-export const CharacterDetails: React.FC<{
-  data: CharacterDetailsResponseSchema;
+export const RpgSystemDetails: React.FC<{
+  data: RpgSystemDetailsResponseSchema;
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
@@ -21,23 +21,13 @@ export const CharacterDetails: React.FC<{
     mutateAsync: publishMutateAsync,
     error,
     status,
-  } = usePublishCharacter();
+  } = usePublishRpgSystem();
 
   const items: DescriptionsProps["items"] = [
     {
       key: "1",
-      label: "Imię",
-      children: <p>{data.firstName}</p>,
-    },
-    {
-      key: "2",
-      label: "Nazwisko",
-      children: <p>{data.lastName}</p>,
-    },
-    {
-      key: "3",
-      label: "Wiek",
-      children: <p>{data.age ? data.age : ""}</p>,
+      label: "Nazwa",
+      children: <p>{data.name}</p>,
     },
     {
       key: "4",
@@ -50,28 +40,42 @@ export const CharacterDetails: React.FC<{
       ),
     },
     {
-      key: "5",
-      label: "Występuje w serii",
-      children: <p>{data.series ? data.series.name : ""}</p>,
-    },
-    {
-      key: "6",
-      label: "System RPG",
-      children: <p>{data.rpgSystem.name}</p>,
-    },
-    {
-      key: "7",
-      label: "Posiadane przedmioty",
+      key: "2",
+      label: "Powiązane historie",
       children: (
         <>
-          {data.items.map((item, key) => (
-            <p key={key}>{item.name}</p>
+          {data.stories.map((story) => (
+            <p key={story.storyId}>{story.name}</p>
           ))}
         </>
       ),
     },
     {
-      key: "8",
+      key: "5",
+      label: "Powiązane serie",
+      children: (
+        <>
+          {data.series.map((serie) => (
+            <p key={serie.seriesId}>{serie.name}</p>
+          ))}
+        </>
+      ),
+    },
+    {
+      key: "6",
+      label: "Powiązane postacie",
+      children: (
+        <>
+          {data.characters.map((character) => (
+            <p key={character.characterId}>
+              {character.firstName + " " + character.lastName}
+            </p>
+          ))}
+        </>
+      ),
+    },
+    {
+      key: "7",
       label: "Tagi",
       children: (
         <>
@@ -88,19 +92,10 @@ export const CharacterDetails: React.FC<{
     },
   ];
 
-  const publish = () => {
-    try {
-      publishMutateAsync({ characterId: data.characterId.toString() });
-      message.success("Gracz zaktualizowany");
-    } catch (error) {
-      message.error("Coś poszło nie tak");
-    }
-  };
-
   return (
     <Conatiner>
       <Descriptions
-        title="Dane postaci"
+        title="System RPG"
         items={items}
         bordered
         column={3}
@@ -114,7 +109,9 @@ export const CharacterDetails: React.FC<{
               okText="Tak"
               okButtonProps={{ loading: status === "loading" }}
               cancelText="Nie"
-              onConfirm={publish}
+              onConfirm={() =>
+                publishMutateAsync({ rpgSystemId: data.rpgSystemId.toString() })
+              }
             >
               <Button type="dashed">
                 {!data.isPublished ? "Opublikuj" : "Ukryj"}
@@ -132,7 +129,7 @@ export const CharacterDetails: React.FC<{
           onCancel={closeModal}
           width={900}
         >
-          <EditCharacterForm onSubmit={closeModal} characterData={data} />
+          <EditRpgSystemForm onSubmit={closeModal} rpgSystemData={data} />
         </Modal>
       )}
     </Conatiner>

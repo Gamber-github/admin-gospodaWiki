@@ -18,6 +18,7 @@ import {
   OptionalPageParams,
 } from "./utils/types";
 import { EmptyObject } from "react-hook-form";
+import message from "antd/es/message";
 
 export type SerieIdParam = {
   serieId: string;
@@ -34,7 +35,7 @@ const getSeries = async ({ queryParams }: GetSeries) =>
 
 export const useGetSeries = (queryParams: GetSeries["queryParams"] = {}) =>
   useQuery({
-    queryKey: ["series", queryParams],
+    queryKey: ["series"],
     queryFn: () => getSeries({ queryParams }),
     retry: false,
   });
@@ -54,6 +55,7 @@ export const useDeleteSeries = () => {
       deleteSeries({ serieId, payload: {} }),
     onSuccess: () => {
       queryClient.invalidateQueries(["series"]);
+      message.success("Rekord pomyślnie usunięty");
     },
   });
 };
@@ -89,7 +91,7 @@ const getSerie = async ({ serieId }: GetSerie) =>
 
 export const useGetSerie = (serieId: string) =>
   useQuery({
-    queryKey: ["serie", { serieId }],
+    queryKey: ["serie"],
     queryFn: () => getSerie({ serieId }),
     retry: false,
   });
@@ -98,7 +100,7 @@ export const useGetSerie = (serieId: string) =>
 
 type PublishSerie = BuildUpdateArgs<EmptyObject, SerieIdParam>;
 
-const publishSerie = async ({ serieId, payload }: PublishSerie) =>
+const publishSerie = ({ serieId, payload }: PublishSerie) =>
   makeAdminPatch(`Series/${serieId}/publish`, emptySchema, payload);
 
 export const usePublishSerie = () => {
@@ -108,7 +110,7 @@ export const usePublishSerie = () => {
     mutationFn: ({ serieId }: SerieIdParam) =>
       publishSerie({ serieId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries(["series"]);
+      queryClient.invalidateQueries({ queryKey: ["serie"] });
     },
   });
 };
@@ -134,7 +136,8 @@ export const useEditSerie = (serieId: string) => {
   return useMutation({
     mutationFn: (payload: EditSeriePayload) => editSerie(serieId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries(["series"]);
+      queryClient.invalidateQueries({ queryKey: ["serie"] });
+      queryClient.invalidateQueries({ queryKey: ["series"] });
     },
   });
 };

@@ -4,8 +4,8 @@ import { Container } from "../../components/UI/CustomStyles/CustomStyles";
 import { useModalProps } from "../../hooks/useModalProps";
 import { UserAddOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { RpgSystemsTable } from "../../components/RpgSystems/RpgSystemsTable";
-import { NewRpgSystemForm } from "../../components/RpgSystems/NewRpgSystemForm";
+import { RpgSystemsTable } from "../../components/Table/RpgSystemsTable";
+import { NewRpgSystemForm } from "../../components/Form/RpgSystem/NewRpgSystemForm";
 
 export const RpgSystems = () => {
   const { showModal, closeModal, isModalOpen } = useModalProps();

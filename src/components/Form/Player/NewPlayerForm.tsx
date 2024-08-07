@@ -3,7 +3,7 @@ import { Button, Form, Input, message } from "antd";
 import Title from "antd/es/typography/Title";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAddPlayer } from "../../api/players";
+import { useAddPlayer } from "../../../api/players";
 
 export const newPlayersSchema = z.object({
   firstName: z.string(),

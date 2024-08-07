@@ -6,13 +6,13 @@ import { z } from "zod";
 import Title from "antd/es/typography/Title";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
-import { CharacterDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
-import { useEditCharacter } from "../../api/characters";
-import { CustomSelection } from "../UI/Select/CustomSelection";
-import { useGetSeries } from "../../api/series";
-import { useGetRpgSystems } from "../../api/rpgSystems";
-import { useGetItems } from "../../api/items";
-import { useGetTags } from "../../api/tags";
+import { CharacterDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
+import { useEditCharacter } from "../../../api/characters";
+import { useGetSeries } from "../../../api/series";
+import { useGetRpgSystems } from "../../../api/rpgSystems";
+import { useGetItems } from "../../../api/items";
+import { useGetTags } from "../../../api/tags";
+import { CustomSelection } from "../../UI/Select/CustomSelection";
 
 export const editCharacterSchema = z.object({
   firstName: z.string(),

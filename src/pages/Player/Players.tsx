@@ -1,10 +1,11 @@
 import { Button, Modal } from "antd";
-import { PlayersTable } from "../../components/Players/PlayersTable";
+import { PlayersTable } from "../../components/Table/PlayersTable";
 import { Container } from "../../components/UI/CustomStyles/CustomStyles";
 import { useModalProps } from "../../hooks/useModalProps";
 import { UserAddOutlined } from "@ant-design/icons";
-import { NewPlayerForm } from "../../components/Players/NewPlayerForm";
+
 import styled from "styled-components";
+import { NewPlayerForm } from "../../components/Form/Player/NewPlayerForm";
 
 export const Players = () => {
   const { showModal, closeModal, isModalOpen } = useModalProps();

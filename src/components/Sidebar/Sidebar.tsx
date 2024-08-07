@@ -13,6 +13,11 @@ import {
 } from "@ant-design/icons";
 import { useAuthUser } from "../../store/AuthUserProvider";
 import { useNav } from "../../routes/router";
+import styled from "styled-components";
+import { Flex } from "../UI/CustomStyles/CustomStyles";
+import Logo from "../../assets/logo.png";
+import Layout from "antd/es/layout/layout";
+const Sider = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -34,53 +39,78 @@ const Sidebar: React.FC = () => {
       icon: <HomeOutlined />,
       onClick: () => navigate("dashboard"),
     },
+    { key: "divider", type: "divider" },
     {
-      key: "players",
-      label: "Gracze",
-      icon: <UserOutlined />,
-      onClick: () => navigate("players"),
+      key: "grp",
+      label: "Dane fabularne",
+      type: "group",
+      children: [
+        {
+          key: "players",
+          label: "Gracze",
+          icon: <UserOutlined />,
+          onClick: () => navigate("players"),
+        },
+        {
+          key: "characters",
+          label: "Postacie",
+          icon: <MehOutlined />,
+          onClick: () => navigate("characters"),
+        },
+        {
+          key: "rpg-systems",
+          label: "Systemy RPG",
+          icon: <BookOutlined />,
+          onClick: () => navigate("rpgSystems"),
+        },
+        {
+          key: "items",
+          label: "Przedmioty fabularne",
+          icon: <ToolOutlined />,
+          onClick: () => navigate("items"),
+        },
+        {
+          key: "series",
+          label: "Serie fabularne",
+          icon: <EditOutlined />,
+          onClick: () => navigate("series"),
+        },
+      ],
     },
+    { key: "divider", type: "divider" },
     {
-      key: "characters",
-      label: "Postacie",
-      icon: <MehOutlined />,
-      onClick: () => navigate("characters"),
-    },
-    {
-      key: "rpgSystems",
-      label: "Systemy RPG",
-      icon: <BookOutlined />,
-      onClick: () => navigate("rpgSystems"),
-    },
-    {
-      key: "items",
-      label: "Przedmioty fabularne",
-      icon: <ToolOutlined />,
-      onClick: () => navigate("items"),
-    },
-    {
-      key: "series",
-      label: "Serie fabularne",
-      icon: <EditOutlined />,
-      onClick: () => navigate("series"),
-    },
-    {
-      key: "events",
+      key: "grp",
       label: "Eventy",
-      icon: <UserOutlined />,
-      onClick: () => navigate("events"),
+      type: "group",
+      children: [
+        {
+          key: "events",
+          label: "Event",
+          icon: <UserOutlined />,
+          onClick: () => navigate("events"),
+        },
+        {
+          key: "locations",
+          label: "Lokacja eventowa",
+          icon: <CalendarOutlined />,
+          onClick: () => navigate("locations"),
+        },
+      ],
     },
+
+    { key: "divider", type: "divider" },
     {
-      key: "locations",
-      label: "Lokacje eventowe",
-      icon: <CalendarOutlined />,
-      onClick: () => navigate("locations"),
-    },
-    {
-      key: "tags",
-      label: "Tagi",
-      icon: <TagOutlined />,
-      onClick: () => navigate("tags"),
+      key: "grp",
+      label: "Dodatkowe",
+      type: "group",
+      children: [
+        {
+          key: "tags",
+          label: "Tagi",
+          icon: <TagOutlined />,
+          onClick: () => navigate("tags"),
+        },
+      ],
     },
     { key: "divider", type: "divider" },
     {
@@ -93,15 +123,36 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <>
-      <Menu
-        style={{ paddingTop: "5rem", width: 260 }}
-        mode="inline"
-        items={items}
-        defaultSelectedKeys={[current]}
-      />
-    </>
+    <StyledSider>
+      <LogoContainer>
+        <StyledImg src={Logo} alt="Logo" />
+      </LogoContainer>
+      <Menu mode="vertical" items={items} defaultSelectedKeys={[current]} />
+    </StyledSider>
   );
 };
+
+export const LogoContainer = styled(Flex)`
+  background-color: #fff;
+  min-height: 80px;
+  height: 100px;
+`;
+
+export const StyledImg = styled.img`
+  height: 70px;
+  margin: auto;
+`;
+
+export const StyledSider = styled(Sider)`
+  min-width: 300px;
+  max-width: 300px;
+  &&& {
+    .ant-layout-sider-children {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+`;
 
 export default Sidebar;

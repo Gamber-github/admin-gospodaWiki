@@ -20,6 +20,8 @@ import { RpgSystems } from "../pages/RpgSystems/RpgSystems";
 import { RpgSystemEdit } from "../pages/RpgSystems/RpgSystemEdit";
 import { Series } from "../pages/Series/Series";
 import { SeriesEdit } from "../pages/Series/SeriesEdit";
+import { Items } from "../pages/Item/Items";
+import { ItemEdit } from "../pages/Item/ItemEdit";
 
 export const APP_ROUTES = {
   main: "/",
@@ -42,7 +44,7 @@ export const APP_ROUTES = {
   editPlayer: "/players/:playerId/edit",
   rpgSystems: "/rpg-systems",
   rpgSystem: "/rpg-systems/:id",
-  editRpgSystem: "/rpg-systems/:id/edit",
+  editRpgSystem: "/rpg-system/:id/edit",
   series: "/series",
   serie: "/series/:id",
   editSerie: "/series/:id/edit",
@@ -121,7 +123,7 @@ export const routes: (RouteObject & { path: Route })[] = [
     element: <Private element={RpgSystems} />,
   },
   {
-    path: "/rpg-systems/:id/edit",
+    path: "/rpg-system/:id/edit",
     element: <Private element={RpgSystemEdit} />,
   },
   {
@@ -131,6 +133,14 @@ export const routes: (RouteObject & { path: Route })[] = [
   {
     path: "/series/:id/edit",
     element: <Private element={SeriesEdit} />,
+  },
+  {
+    path: "/items",
+    element: <Private element={Items} />,
+  },
+  {
+    path: "/items/:id/edit",
+    element: <Private element={ItemEdit} />,
   },
   {
     path: "*",

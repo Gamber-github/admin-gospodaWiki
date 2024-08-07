@@ -94,9 +94,9 @@ export const makeAdminPost = <T extends z.ZodTypeAny>(
 export const makeAdminPatch = <T extends z.ZodTypeAny>(
   path: string,
   schema: T,
-  payload?: unknown
+  payload: unknown
 ) => {
-  buildDataQuery({
+  return buildDataQuery({
     api: "admin",
     request: { method: "PATCH", type: "json", payload },
     path,
@@ -109,7 +109,7 @@ export const makeAdminPut = <T extends z.ZodTypeAny>(
   schema: T,
   payload: unknown
 ) => {
-  buildDataQuery({
+  return buildDataQuery({
     api: "admin",
     request: { method: "PUT", type: "json", payload },
     path,
@@ -122,7 +122,7 @@ export const makeAdminDelete = <T extends z.ZodTypeAny>(
   schema: T,
   payload: unknown
 ) => {
-  buildDataQuery({
+  return buildDataQuery({
     api: "admin",
     request: { method: "DELETE", payload, type: "json" },
     path,
