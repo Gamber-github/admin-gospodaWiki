@@ -41,12 +41,12 @@ export const SerieDetails: React.FC<{
       children: <p>{data.rpgSystem ? data.rpgSystem.name : ""}</p>,
     },
     {
-      key: "9",
+      key: "4",
       label: "Playlist Youtube ID",
       children: <p>{data.youtubePlaylistId ? data.youtubePlaylistId : ""}</p>,
     },
     {
-      key: "8",
+      key: "5",
       label: "Mistrz Gry",
       children: (
         <p>
@@ -57,7 +57,7 @@ export const SerieDetails: React.FC<{
       ),
     },
     {
-      key: "4",
+      key: "6",
       label: "Powiązani gracze",
       children: (
         <>
@@ -71,7 +71,7 @@ export const SerieDetails: React.FC<{
       ),
     },
     {
-      key: "5",
+      key: "7",
       label: "Powiązane postacie",
       children: (
         <>
@@ -85,7 +85,7 @@ export const SerieDetails: React.FC<{
       ),
     },
     {
-      key: "6",
+      key: "8",
       label: "Tagi",
       children: (
         <>
@@ -95,19 +95,14 @@ export const SerieDetails: React.FC<{
       ),
     },
     {
-      key: "7",
+      key: "9",
       label: "Opis",
       children: <p>{data.description}</p>,
     },
   ];
 
   const publish = () => {
-    try {
-      publishMutateAsync({ serieId: data.seriesId.toString() });
-      message.success("System zaktualizowany");
-    } catch (error) {
-      message.error("Coś poszło nie tak");
-    }
+    publishMutateAsync({ serieId: data.seriesId.toString() });
   };
 
   return (
@@ -116,7 +111,7 @@ export const SerieDetails: React.FC<{
         title="Seria"
         items={items}
         bordered
-        column={3}
+        column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }}
         extra={
           <>
             <Button type="primary" onClick={showModal}>

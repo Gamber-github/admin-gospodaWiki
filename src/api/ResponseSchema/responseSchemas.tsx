@@ -183,6 +183,15 @@ export const itemDetailsResponseSchema = z.object({
   isPublished: z.boolean(),
 });
 
+export const tagResponseSchema = z.object({
+  tagId: z.number(),
+  name: z.string(),
+  isPublished: z.boolean(),
+});
+
+export const TagsListResponseSchema =
+  buildListEndpointSchema(tagResponseSchema);
+
 export type ItemDetailsResponseSchema = z.infer<
   typeof itemDetailsResponseSchema
 >;

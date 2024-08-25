@@ -30,7 +30,7 @@ export const RpgSystemDetails: React.FC<{
       children: <p>{data.name}</p>,
     },
     {
-      key: "4",
+      key: "2",
       label: "Opublikowany",
       children: (
         <Badge
@@ -40,7 +40,7 @@ export const RpgSystemDetails: React.FC<{
       ),
     },
     {
-      key: "2",
+      key: "3",
       label: "Powiązane historie",
       children: (
         <>
@@ -51,7 +51,7 @@ export const RpgSystemDetails: React.FC<{
       ),
     },
     {
-      key: "5",
+      key: "4",
       label: "Powiązane serie",
       children: (
         <>
@@ -62,7 +62,7 @@ export const RpgSystemDetails: React.FC<{
       ),
     },
     {
-      key: "6",
+      key: "5",
       label: "Powiązane postacie",
       children: (
         <>
@@ -75,7 +75,7 @@ export const RpgSystemDetails: React.FC<{
       ),
     },
     {
-      key: "7",
+      key: "6",
       label: "Tagi",
       children: (
         <>
@@ -86,8 +86,9 @@ export const RpgSystemDetails: React.FC<{
       ),
     },
     {
-      key: "",
+      key: "7",
       label: "Opis",
+      span: 2,
       children: <p>{data.description}</p>,
     },
   ];

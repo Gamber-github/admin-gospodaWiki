@@ -39,9 +39,9 @@ const Sidebar: React.FC = () => {
       icon: <HomeOutlined />,
       onClick: () => navigate("dashboard"),
     },
-    { key: "divider", type: "divider" },
+    { key: "divider1", type: "divider" },
     {
-      key: "grp",
+      key: "grp1",
       label: "Dane fabularne",
       type: "group",
       children: [
@@ -77,9 +77,9 @@ const Sidebar: React.FC = () => {
         },
       ],
     },
-    { key: "divider", type: "divider" },
+    { key: "divider2", type: "divider" },
     {
-      key: "grp",
+      key: "grp2",
       label: "Eventy",
       type: "group",
       children: [
@@ -98,9 +98,9 @@ const Sidebar: React.FC = () => {
       ],
     },
 
-    { key: "divider", type: "divider" },
+    { key: "divider3", type: "divider" },
     {
-      key: "grp",
+      key: "grp3",
       label: "Dodatkowe",
       type: "group",
       children: [
@@ -112,7 +112,7 @@ const Sidebar: React.FC = () => {
         },
       ],
     },
-    { key: "divider", type: "divider" },
+    { key: "divider4", type: "divider" },
     {
       icon: <LogoutOutlined />,
       label: "Wyloguj się",
@@ -144,8 +144,8 @@ export const StyledImg = styled.img`
 `;
 
 export const StyledSider = styled(Sider)`
-  min-width: 300px;
-  max-width: 300px;
+  min-width: 250px;
+  max-width: 250px;
   &&& {
     .ant-layout-sider-children {
       height: 100%;

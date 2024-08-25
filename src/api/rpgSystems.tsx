@@ -55,7 +55,7 @@ export const useDeleteRpgSystem = () => {
     mutationFn: ({ rpgSystemId }: RpgSystemIdParam) =>
       deleteRpgSystem({ rpgSystemId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries(["rpgSystems"]);
+      queryClient.invalidateQueries({queryKey: ["rpgSystems"]});
     },
   });
 };

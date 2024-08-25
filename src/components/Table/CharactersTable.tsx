@@ -12,6 +12,7 @@ import {
   useDeleteCharacter,
   useGetCharacters,
 } from "../../api/characters";
+import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
 
 type CharacterData = {
   characterId: number;
@@ -64,11 +65,10 @@ export const CharactersTable: React.FC = () => {
       key: "action",
       align: "center",
       render: (text, { characterId }) => (
-        <>
+        <ButtonsConteiner>
           <Button
             type="default"
             key={characterId}
-            style={{ marginRight: 10 }}
             onClick={() =>
               navigate("editCharacter", { id: characterId.toString() })
             }
@@ -80,7 +80,7 @@ export const CharactersTable: React.FC = () => {
             payload={{ characterId: characterId.toString() }}
             status={deleteStatus}
           />
-        </>
+        </ButtonsConteiner>
       ),
     },
   ];
