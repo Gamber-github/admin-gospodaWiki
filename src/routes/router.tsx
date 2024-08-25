@@ -22,6 +22,8 @@ import { Series } from "../pages/Series/Series";
 import { SeriesEdit } from "../pages/Series/SeriesEdit";
 import { Items } from "../pages/Item/Items";
 import { ItemEdit } from "../pages/Item/ItemEdit";
+import { Tags } from "../pages/Tags/Tags";
+import { TagsEdit } from "../pages/Tags/TagsEdit";
 
 export const APP_ROUTES = {
   main: "/",
@@ -141,6 +143,10 @@ export const routes: (RouteObject & { path: Route })[] = [
   {
     path: "/items/:id/edit",
     element: <Private element={ItemEdit} />,
+  },
+  {
+    path: "/tags",
+    element: <Private element={Tags} />,
   },
   {
     path: "*",

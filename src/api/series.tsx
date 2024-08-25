@@ -77,7 +77,7 @@ export const useAddSerie = () => {
   return useMutation({
     mutationFn: (payload: CreateSeriesPayload) => addSerie(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries(["series"]);
+      queryClient.invalidateQueries({ queryKey: ["series"] });
     },
   });
 };
@@ -91,7 +91,7 @@ const getSerie = async ({ serieId }: GetSerie) =>
 
 export const useGetSerie = (serieId: string) =>
   useQuery({
-    queryKey: ["serie"],
+    queryKey: ["serie", serieId],
     queryFn: () => getSerie({ serieId }),
     retry: false,
   });
@@ -110,7 +110,7 @@ export const usePublishSerie = () => {
     mutationFn: ({ serieId }: SerieIdParam) =>
       publishSerie({ serieId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["serie"] });
+      queryClient.invalidateQueries({ queryKey: ["serie"], exact: false });
     },
   });
 };
@@ -137,7 +137,6 @@ export const useEditSerie = (serieId: string) => {
     mutationFn: (payload: EditSeriePayload) => editSerie(serieId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["serie"] });
-      queryClient.invalidateQueries({ queryKey: ["series"] });
     },
   });
 };

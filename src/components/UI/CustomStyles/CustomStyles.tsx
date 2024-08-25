@@ -33,3 +33,8 @@ export const SectionHeader = styled.div`
 `;
 
 export const Options = styled.div``;
+
+export const ButtonsConteiner = styled.div`
+  display: flex;
+  gap: 1rem;
+`;

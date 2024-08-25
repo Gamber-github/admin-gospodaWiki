@@ -7,6 +7,7 @@ import { ColumnType } from "antd/es/table";
 import { EditOutlined } from "@ant-design/icons";
 import DeleteButton from "../UI/Buttons/DeleteButton";
 import { SerieIdParam, useDeleteSeries, useGetSeries } from "../../api/series";
+import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
 
 type SeriesData = {
   seriesId: number;
@@ -48,11 +49,10 @@ export const SerieTable: React.FC = () => {
       key: "action",
       align: "center",
       render: (text, { seriesId }) => (
-        <>
+        <ButtonsConteiner>
           <Button
             type="default"
             key={seriesId}
-            style={{ marginRight: 10 }}
             onClick={() => navigate("editSerie", { id: seriesId.toString() })}
           >
             <EditOutlined />
@@ -62,7 +62,7 @@ export const SerieTable: React.FC = () => {
             mutateAsync={mutateAsync}
             status={DeleteStatus}
           />
-        </>
+        </ButtonsConteiner>
       ),
     },
   ];
