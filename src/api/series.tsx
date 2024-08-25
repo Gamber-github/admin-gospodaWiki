@@ -110,7 +110,7 @@ export const usePublishSerie = () => {
     mutationFn: ({ serieId }: SerieIdParam) =>
       publishSerie({ serieId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["serie"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["serie"] });
     },
   });
 };
@@ -136,7 +136,9 @@ export const useEditSerie = (serieId: string) => {
   return useMutation({
     mutationFn: (payload: EditSeriePayload) => editSerie(serieId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["serie"] });
+      queryClient.invalidateQueries({ queryKey: ["serie", serieId] });
+      queryClient.invalidateQueries({ queryKey: ["series"] });
+      message.success("Rekord pomyślnie zaktualizowany");
     },
   });
 };

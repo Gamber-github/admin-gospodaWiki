@@ -9,21 +9,16 @@ import Modal from "antd/es/modal";
 import { useModalProps } from "../../hooks/useModalProps";
 import Popconfirm from "antd/es/popconfirm";
 import message from "antd/es/message";
-import { ItemDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
-import { usePublishItem } from "../../api/items";
-import { EditItemForm } from "../Form/Item/EditItemForm";
+import { EventDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+import { usePublishEvent } from "../../api/events";
+import { EditEventForm } from "../Form/Event/EditEventForm";
 
-export const ItemDetails: React.FC<{
-  data: ItemDetailsResponseSchema;
+export const EventDetails: React.FC<{
+  data: EventDetailsResponseSchema;
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const {
-    mutateAsync: publishMutateAsync,
-    error,
-    status,
-    isLoading,
-  } = usePublishItem();
+  const { mutateAsync: publishMutateAsync, error, status } = usePublishEvent();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -43,46 +38,41 @@ export const ItemDetails: React.FC<{
     },
     {
       key: "3",
-      label: "Właściciel",
-      children: <p>{data.ownerName ? data.ownerName : ""}</p>,
+      label: "Data rozpoczęcia",
+      children: <p>{data.date}</p>,
     },
     {
-      key: "3",
-      label: "Postacie posiadające przedmiot",
-      children: (
-        <>
-          {data.characters &&
-            data.characters.map((character) => (
-              <p key={character.characterId}>
-                {character.firstName + " " + character.lastName}
-              </p>
-            ))}
-        </>
-      ),
+      key: "4",
+      label: "Miejsce",
+      children: <p>{data.location.name}</p>,
+    },
+    {
+      key: "5",
+      label: "URL wydarzenia",
+      children: <p>{data.eventUrl}</p>,
     },
     {
       key: "6",
       label: "Tagi",
       children: (
         <>
-          {data.tags &&
-            data.tags.map((tag, key) => <p key={key}>{tag.name}</p>)}
+          {data.tags.map((tag, key) => (
+            <p key={key}>{tag.name}</p>
+          ))}
         </>
       ),
     },
     {
       key: "7",
       label: "Opis",
+      span: 2,
       children: <p>{data.description}</p>,
     },
   ];
 
-  const publish = () => publishMutateAsync({ id: data.itemId.toString() });
-
   return (
     <Conatiner>
       <Descriptions
-        title="Przedmiot fabularny"
         items={items}
         bordered
         column={3}
@@ -94,10 +84,13 @@ export const ItemDetails: React.FC<{
             <Popconfirm
               title="Jesteś pewien?"
               okText="Tak"
+              okButtonProps={{ loading: status === "loading" }}
               cancelText="Nie"
-              onConfirm={publish}
+              onConfirm={() =>
+                publishMutateAsync({ eventId: data.eventId.toString() })
+              }
             >
-              <Button type="dashed" loading={isLoading}>
+              <Button type="dashed">
                 {!data.isPublished ? "Opublikuj" : "Ukryj"}
               </Button>
             </Popconfirm>
@@ -113,7 +106,7 @@ export const ItemDetails: React.FC<{
           onCancel={closeModal}
           width={900}
         >
-          <EditItemForm onSubmit={closeModal} itemData={data} />
+          <EditEventForm onSubmit={closeModal} eventData={data} />
         </Modal>
       )}
     </Conatiner>

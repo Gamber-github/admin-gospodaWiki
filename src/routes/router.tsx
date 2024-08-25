@@ -23,40 +23,36 @@ import { SeriesEdit } from "../pages/Series/SeriesEdit";
 import { Items } from "../pages/Item/Items";
 import { ItemEdit } from "../pages/Item/ItemEdit";
 import { Tags } from "../pages/Tags/Tags";
-import { TagsEdit } from "../pages/Tags/TagsEdit";
+import { Events } from "../pages/Event/Events";
+import { EventEdit } from "../pages/Event/EventEdit";
+import { Locations } from "../pages/Location/Locations";
+import { LocationDetails } from "../pages/Location/LocationEdit";
 
 export const APP_ROUTES = {
   main: "/",
   dashboard: "/dashboard",
   login: "/login",
   characters: "/characters",
-  character: "/characters/:id",
   editCharacter: "/characters/:id/edit",
   events: "/events",
-  event: "/events/:id",
   editEvent: "/events/:id/edit",
   locations: "/locations",
-  location: "/locations/:id",
   editLocation: "/locations/:id/edit",
   items: "/items",
-  item: "/items/:id",
   editItem: "/items/:id/edit",
   players: "/players",
-  player: "/players/:id",
   editPlayer: "/players/:playerId/edit",
   rpgSystems: "/rpg-systems",
-  rpgSystem: "/rpg-systems/:id",
   editRpgSystem: "/rpg-system/:id/edit",
   series: "/series",
-  serie: "/series/:id",
   editSerie: "/series/:id/edit",
   stories: "/stories",
-  story: "/stories/:id",
   editStory: "/stories/edit",
   addStory: "/stories/add",
   tags: "/tags",
-  tag: "/tags/:id",
   editTag: "/tags/:id/edit",
+  adventures: "/adventure",
+  editAdventure: "/adventure/:id/edit",
   rest: "*",
 } as const;
 
@@ -147,6 +143,22 @@ export const routes: (RouteObject & { path: Route })[] = [
   {
     path: "/tags",
     element: <Private element={Tags} />,
+  },
+  {
+    path: "/events",
+    element: <Private element={Events} />,
+  },
+  {
+    path: "/events/:id/edit",
+    element: <Private element={EventEdit} />,
+  },
+  {
+    path: "/locations",
+    element: <Private element={Locations} />,
+  },
+  {
+    path: "/locations/:id/edit",
+    element: <Private element={LocationDetails} />,
   },
   {
     path: "*",
