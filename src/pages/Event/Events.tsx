@@ -1,8 +1,10 @@
 import { Button, Modal } from "antd";
-import { Container } from "../../components/UI/CustomStyles/CustomStyles";
+import {
+  ButtonContainer,
+  Container,
+} from "../../components/UI/CustomStyles/CustomStyles";
 import { useModalProps } from "../../hooks/useModalProps";
 import { UserAddOutlined } from "@ant-design/icons";
-import styled from "styled-components";
 import { EventsTable } from "../../components/Table/EventsTable";
 import { NewEventForm } from "../../components/Form/Event/NewEventForm";
 
@@ -25,7 +27,3 @@ export const Events = () => {
     </Container>
   );
 };
-
-const ButtonContainer = styled.div`
-  margin-bottom: 1rem;
-`;

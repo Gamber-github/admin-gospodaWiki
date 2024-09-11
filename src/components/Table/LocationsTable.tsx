@@ -6,22 +6,27 @@ import { useNav } from "../../routes/router";
 import { ColumnType } from "antd/es/table";
 import { EditOutlined } from "@ant-design/icons";
 import DeleteButton from "../UI/Buttons/DeleteButton";
-import { useDeleteItem, useGetItems } from "../../api/items";
+import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
 import { DefaultTableData } from "./utils";
+import {
+  LocationIdParam,
+  useDeleteLocation,
+  useGetLocations,
+} from "../../api/locations";
 
-type TableData = DefaultTableData & { itemId: number };
+type TableData = DefaultTableData & { locationId: number };
 
 const { Text } = Typography;
 
-export const ItemsTable: React.FC = () => {
+export const LocationsTable: React.FC = () => {
   const [page, setPage] = useState(1);
 
-  const { data, status, error } = useGetItems({
+  const { data, status, error } = useGetLocations({
     pageSize: DEFAULT_TABLE_SIZE,
     pageNumber: page,
   });
 
-  const { mutateAsync, status: DeleteStatus } = useDeleteItem();
+  const { mutateAsync, status: DeleteStatus } = useDeleteLocation();
 
   const { navigate } = useNav();
 
@@ -44,22 +49,23 @@ export const ItemsTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { itemId }) => (
-        <>
+      render: (text, { locationId }) => (
+        <ButtonsConteiner>
           <Button
             type="default"
-            key={itemId}
-            style={{ marginRight: 10 }}
-            onClick={() => navigate("editItem", { id: itemId.toString() })}
+            key={locationId}
+            onClick={() =>
+              navigate("editLocation", { id: locationId.toString() })
+            }
           >
             <EditOutlined />
           </Button>
-          <DeleteButton<string>
-            payload={itemId.toString()}
+          <DeleteButton<LocationIdParam>
+            payload={{ locationId: locationId.toString() }}
             mutateAsync={mutateAsync}
             status={DeleteStatus}
           />
-        </>
+        </ButtonsConteiner>
       ),
     },
   ];
@@ -68,10 +74,10 @@ export const ItemsTable: React.FC = () => {
     return <StatusAsyncHelper status={status} error={error} />;
 
   return (
-    <Table
+    <Table<TableData>
       columns={columns}
       dataSource={data.items}
-      rowKey={(item) => item.itemId}
+      rowKey={(item) => item.locationId}
       pagination={buildPagination(data, setPage)}
     />
   );

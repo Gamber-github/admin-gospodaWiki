@@ -1,4 +1,4 @@
-import { Button, Table, Typography, Input } from "antd";
+import { Button, Table, Input } from "antd";
 import React, { useState } from "react";
 import { buildPagination, DEFAULT_TABLE_SIZE } from "../helpers";
 import { StatusAsyncHelper } from "../AsyncHelper/StatusAsyncHelper";
@@ -19,12 +19,9 @@ import {
   useEditTag,
 } from "../../api/tags";
 import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
+import { DefaultTableData } from "./utils";
 
-type TagData = {
-  tagId: number;
-  name: string;
-  isPublished: boolean;
-};
+type TableData = DefaultTableData & { tagId: number };
 
 export const TagsTable: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -40,7 +37,7 @@ export const TagsTable: React.FC = () => {
   const { mutateAsync: editTag } = useEditTag(editingKey || "");
   const { mutateAsync, status: DeleteStatus } = useDeleteTag();
 
-  const handleEdit = (record: TagData) => {
+  const handleEdit = (record: TableData) => {
     setEditingKey(record.tagId.toString());
     setEditingValue(record.name);
   };
@@ -62,13 +59,13 @@ export const TagsTable: React.FC = () => {
     }
   };
 
-  const columns: ColumnType<TagData>[] = [
+  const columns: ColumnType<TableData>[] = [
     {
       title: "Nazwa",
       dataIndex: "name",
       key: "name",
       align: "center",
-      render: (text: string, record: TagData) => {
+      render: (text: string, record: TableData) => {
         if (editingKey === record.tagId.toString()) {
           return (
             <Input
@@ -92,7 +89,7 @@ export const TagsTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (_: unknown, record: TagData) => {
+      render: (_: unknown, record: TableData) => {
         if (editingKey === record.tagId.toString()) {
           return (
             <ButtonsConteiner>

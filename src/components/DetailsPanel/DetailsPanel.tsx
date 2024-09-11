@@ -1,5 +1,4 @@
 import Button from "antd/es/button";
-import message from "antd/es/message";
 import Popconfirm from "antd/es/popconfirm";
 
 type DetailsPanelProps = {
@@ -7,11 +6,9 @@ type DetailsPanelProps = {
   publish: () => void;
   status: string;
   isPublished: boolean;
-  error: unknown;
 };
 
 export const DetailsPanel: React.FC<DetailsPanelProps> = ({
-  error,
   isPublished,
   publish,
   showModal,
@@ -31,7 +28,6 @@ export const DetailsPanel: React.FC<DetailsPanelProps> = ({
       >
         <Button type="dashed">{!isPublished ? "Opublikuj" : "Ukryj"}</Button>
       </Popconfirm>
-      {error && message.error("Coś poszło nie tak")}
     </>
   );
 };

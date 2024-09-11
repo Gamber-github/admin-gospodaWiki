@@ -26,7 +26,7 @@ import { Tags } from "../pages/Tags/Tags";
 import { Events } from "../pages/Event/Events";
 import { EventEdit } from "../pages/Event/EventEdit";
 import { Locations } from "../pages/Location/Locations";
-import { LocationDetails } from "../pages/Location/LocationEdit";
+import { LocationEdit } from "../pages/Location/LocationEdit";
 
 export const APP_ROUTES = {
   main: "/",
@@ -158,7 +158,7 @@ export const routes: (RouteObject & { path: Route })[] = [
   },
   {
     path: "/locations/:id/edit",
-    element: <Private element={LocationDetails} />,
+    element: <Private element={LocationEdit} />,
   },
   {
     path: "*",

@@ -9,12 +9,9 @@ import DeleteButton from "../UI/Buttons/DeleteButton";
 import { EventIdParam } from "../../api/events";
 import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
 import { useDeleteEvent, useGetEvents } from "../../api/events";
+import { DefaultTableData } from "./utils";
 
-type EventData = {
-  eventId: number;
-  name: string;
-  isPublished: boolean;
-};
+type TableData = DefaultTableData & { eventId: number };
 
 const { Text } = Typography;
 
@@ -30,7 +27,7 @@ export const EventsTable: React.FC = () => {
 
   const { navigate } = useNav();
 
-  const columns: ColumnType<EventData>[] = [
+  const columns: ColumnType<TableData>[] = [
     {
       title: "Nazwa",
       dataIndex: "name",

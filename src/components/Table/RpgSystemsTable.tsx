@@ -11,12 +11,9 @@ import {
   useDeleteRpgSystem,
   useGetRpgSystems,
 } from "../../api/rpgSystems";
+import { DefaultTableData } from "./utils";
 
-type RpgSystemsData = {
-  rpgSystemId: number;
-  name: string;
-  isPublished: boolean;
-};
+type TableData = DefaultTableData & { rpgSystemId: number };
 
 const { Text } = Typography;
 
@@ -32,7 +29,7 @@ export const RpgSystemsTable: React.FC = () => {
 
   const { navigate } = useNav();
 
-  const columns: ColumnType<RpgSystemsData>[] = [
+  const columns: ColumnType<TableData>[] = [
     {
       title: "Nazwa",
       dataIndex: "name",

@@ -54,7 +54,7 @@ export const useDeleteEvent = () => {
     mutationFn: ({ eventId }: EventIdParam) =>
       deleteEvent({ eventId, payload: {} }),
     onSuccess: () => {
-      queryClient.invalidateQueries(["events"]);
+      queryClient.invalidateQueries({ queryKey: ["events"] });
       message.success("Rekord pomyślnie usunięty");
     },
   });
@@ -79,7 +79,7 @@ export const useAddEvent = () => {
   return useMutation({
     mutationFn: (payload: CreateEventPayload) => addEvent(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries(["events"]);
+      queryClient.invalidateQueries({ queryKey: ["events"] });
       message.success("Rekord pomyślnie dodany");
     },
   });
@@ -104,7 +104,7 @@ export const useGetEventDetails = (eventId: string) =>
 type PublishEvent = BuildUpdateArgs<EmptyObject, EventIdParam>;
 
 const publishEvent = async ({ eventId, payload }: PublishEvent) =>
-  makeAdminPatch(`Event/${eventId}/Publish`, emptySchema, payload);
+  makeAdminPatch(`Event/${eventId}/publish`, emptySchema, payload);
 
 export const usePublishEvent = () => {
   const queryClient = useQueryClient();

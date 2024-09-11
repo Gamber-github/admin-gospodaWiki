@@ -230,6 +230,25 @@ export const locationsListResponseSchema = buildListEndpointSchema(
   locationResponseSchema
 );
 
+export const eventReferenceResponseSchema = z.object({
+  eventId: z.number(),
+  name: z.string(),
+});
+
+export const locationDetailsResponseSchema = z.object({
+  locationId: z.number(),
+  name: z.string(),
+  isPublished: z.boolean(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  locationURL: z.string().optional(),
+  events: z.array(eventReferenceResponseSchema),
+});
+
+export type LocationDetailsResponseSchema = z.infer<
+  typeof locationDetailsResponseSchema
+>;
+
 export type EventDetailsResponseSchema = z.infer<
   typeof eventDetailsResponseSchema
 >;
