@@ -1,17 +1,18 @@
-import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
+import { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
 
 import Badge from "antd/es/badge";
-import styled from "styled-components";
-import Button from "antd/es/button";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
-import Popconfirm from "antd/es/popconfirm";
+
 import message from "antd/es/message";
 import { EventDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import { usePublishEvent } from "../../api/events";
 import { EditEventForm } from "../Form/Event/EditEventForm";
+import { Descriptions } from "../UI/Descriptions/Descriptions";
+import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
+import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
 
 export const EventDetails: React.FC<{
   data: EventDetailsResponseSchema;
@@ -70,34 +71,25 @@ export const EventDetails: React.FC<{
     },
   ];
 
+  const publish = async () => {
+    try {
+      await publishMutateAsync({ eventId: data.eventId.toString() });
+      message.success("Zaktualizowano status publikacji");
+    } catch (error) {
+      message.error("Wystąpił błąd podczas publikacji");
+    }
+  };
+
   return (
-    <Conatiner>
-      <Descriptions
-        items={items}
-        bordered
-        column={3}
-        extra={
-          <>
-            <Button type="primary" onClick={showModal}>
-              Edytuj
-            </Button>
-            <Popconfirm
-              title="Jesteś pewien?"
-              okText="Tak"
-              okButtonProps={{ loading: status === "loading" }}
-              cancelText="Nie"
-              onConfirm={() =>
-                publishMutateAsync({ eventId: data.eventId.toString() })
-              }
-            >
-              <Button type="dashed">
-                {!data.isPublished ? "Opublikuj" : "Ukryj"}
-              </Button>
-            </Popconfirm>
-            {error && message.error("Coś poszło nie tak")}
-          </>
-        }
+    <DetailsConatiner>
+      <DetailsPanel
+        error={error}
+        isPublished={data.isPublished}
+        publish={publish}
+        showModal={showModal}
+        status={status}
       />
+      <Descriptions items={items} title="Szczegóły wydarzenia" />
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -109,14 +101,6 @@ export const EventDetails: React.FC<{
           <EditEventForm onSubmit={closeModal} eventData={data} />
         </Modal>
       )}
-    </Conatiner>
+    </DetailsConatiner>
   );
 };
-
-const Conatiner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;

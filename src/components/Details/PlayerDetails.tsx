@@ -1,4 +1,4 @@
-import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
+import { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
 import { PlayerDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
@@ -11,6 +11,9 @@ import Popconfirm from "antd/es/popconfirm";
 import { usePublishPlayer } from "../../api/players";
 import message from "antd/es/message";
 import { EditPlayerForm } from "../Form/Player/EditPlayerForm";
+import { Descriptions } from "../UI/Descriptions/Descriptions";
+import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
+import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
 
 export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
   data,
@@ -73,32 +76,15 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
   };
 
   return (
-    <Conatiner>
-      <Descriptions
-        title="Dane gracza"
-        items={items}
-        bordered
-        column={3}
-        extra={
-          <>
-            <Button type="primary" onClick={showModal}>
-              Edytuj
-            </Button>
-            <Popconfirm
-              title="Jesteś pewien?"
-              okText="Tak"
-              okButtonProps={{ loading: status === "loading" }}
-              cancelText="Nie"
-              onConfirm={publish}
-            >
-              <Button type="dashed">
-                {!data.isPublished ? "Opublikuj" : "Ukryj"}
-              </Button>
-            </Popconfirm>
-            {error && message.error("Coś poszło nie tak")}
-          </>
-        }
+    <DetailsConatiner>
+      <DetailsPanel
+        error={error}
+        isPublished={data.isPublished}
+        publish={publish}
+        showModal={showModal}
+        status={status}
       />
+      <Descriptions title="Dane gracza" items={items} />
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -110,14 +96,6 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
           <EditPlayerForm onSubmit={closeModal} playerData={data} />
         </Modal>
       )}
-    </Conatiner>
+    </DetailsConatiner>
   );
 };
-
-const Conatiner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;

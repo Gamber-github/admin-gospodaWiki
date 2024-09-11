@@ -1,16 +1,16 @@
-import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
+import { DescriptionsProps } from "antd/es/descriptions";
+import { Descriptions } from "../UI/Descriptions/Descriptions";
 import React from "react";
 import { RpgSystemDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
-import styled from "styled-components";
-import Button from "antd/es/button";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
-import Popconfirm from "antd/es/popconfirm";
 import message from "antd/es/message";
 import { usePublishRpgSystem } from "../../api/rpgSystems";
 import { EditRpgSystemForm } from "../Form/RpgSystem/EditRpgSystem";
+import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
+import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
 
 export const RpgSystemDetails: React.FC<{
   data: RpgSystemDetailsResponseSchema;
@@ -93,35 +93,25 @@ export const RpgSystemDetails: React.FC<{
     },
   ];
 
+  const publish = async () => {
+    try {
+      await publishMutateAsync({ rpgSystemId: data.rpgSystemId.toString() });
+    } catch (error) {
+      message.error("Coś poszło nie tak");
+    }
+  };
+
   return (
-    <Conatiner>
-      <Descriptions
-        title="System RPG"
-        items={items}
-        bordered
-        column={3}
-        extra={
-          <>
-            <Button type="primary" onClick={showModal}>
-              Edytuj
-            </Button>
-            <Popconfirm
-              title="Jesteś pewien?"
-              okText="Tak"
-              okButtonProps={{ loading: status === "loading" }}
-              cancelText="Nie"
-              onConfirm={() =>
-                publishMutateAsync({ rpgSystemId: data.rpgSystemId.toString() })
-              }
-            >
-              <Button type="dashed">
-                {!data.isPublished ? "Opublikuj" : "Ukryj"}
-              </Button>
-            </Popconfirm>
-            {error && message.error("Coś poszło nie tak")}
-          </>
-        }
+    <DetailsConatiner>
+      <DetailsPanel
+        error={error}
+        isPublished={data.isPublished}
+        publish={publish}
+        showModal={showModal}
+        status={status}
       />
+      <Descriptions title="System RPG" items={items} />
+
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -133,14 +123,6 @@ export const RpgSystemDetails: React.FC<{
           <EditRpgSystemForm onSubmit={closeModal} rpgSystemData={data} />
         </Modal>
       )}
-    </Conatiner>
+    </DetailsConatiner>
   );
 };
-
-const Conatiner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;

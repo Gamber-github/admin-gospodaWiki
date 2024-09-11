@@ -1,16 +1,16 @@
-import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
+import { DescriptionsProps } from "antd/es/descriptions";
+import { Descriptions } from "../UI/Descriptions/Descriptions";
 import React from "react";
 import { CharacterDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
-import styled from "styled-components";
-import Button from "antd/es/button";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
-import Popconfirm from "antd/es/popconfirm";
 import message from "antd/es/message";
 import { usePublishCharacter } from "../../api/characters";
 import { EditCharacterForm } from "../Form/Character/EditCharacterForm";
+import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
+import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
 
 export const CharacterDetails: React.FC<{
   data: CharacterDetailsResponseSchema;
@@ -98,32 +98,15 @@ export const CharacterDetails: React.FC<{
   };
 
   return (
-    <Conatiner>
-      <Descriptions
-        title="Dane postaci"
-        items={items}
-        bordered
-        column={3}
-        extra={
-          <>
-            <Button type="primary" onClick={showModal}>
-              Edytuj
-            </Button>
-            <Popconfirm
-              title="Jesteś pewien?"
-              okText="Tak"
-              okButtonProps={{ loading: status === "loading" }}
-              cancelText="Nie"
-              onConfirm={publish}
-            >
-              <Button type="dashed">
-                {!data.isPublished ? "Opublikuj" : "Ukryj"}
-              </Button>
-            </Popconfirm>
-            {error && message.error("Coś poszło nie tak")}
-          </>
-        }
+    <DetailsConatiner>
+      <DetailsPanel
+        publish={publish}
+        status={status}
+        error={error}
+        isPublished={data.isPublished}
+        showModal={showModal}
       />
+      <Descriptions title="Dane postaci" items={items} />
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -135,14 +118,6 @@ export const CharacterDetails: React.FC<{
           <EditCharacterForm onSubmit={closeModal} characterData={data} />
         </Modal>
       )}
-    </Conatiner>
+    </DetailsConatiner>
   );
 };
-
-const Conatiner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;
