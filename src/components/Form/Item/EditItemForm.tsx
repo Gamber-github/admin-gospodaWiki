@@ -5,11 +5,11 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { ItemDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
 import Title from "antd/es/typography/Title";
-import Input from "antd/es/input/Input";
-import TextArea from "antd/es/input/TextArea";
 import { CustomSelection } from "../../UI/Select/CustomSelection";
 import { useEditItem } from "../../../api/items";
 import { useGetTags } from "../../../api/tags";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
 
 export const EditItemSchema = z.object({
   name: z.string(),
@@ -60,7 +60,6 @@ export const EditItemForm: React.FC<{
   const submit = async (payload: EditItemSchemaType) => {
     try {
       await EditRecord(payload);
-      message.success("Rekord pomyślnie zaktualizowany");
       onSubmit();
     } catch (error) {
       message.error(`Nie udało się zaktualizować rekordu. Spróbuj ponownie`);
@@ -72,30 +71,20 @@ export const EditItemForm: React.FC<{
       <Title style={{ marginBottom: "1rem" }} level={2}>
         Edytuj przedmiot: {itemData.name}
       </Title>
-      <Form.Item
+      <ControlledInput
         name="name"
         label="Nazwa"
-        help={errors.name?.message as string}
-        validateStatus={errors.name ? "error" : ""}
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        control={control}
+        errors={errors}
+        defaultValue={itemData.name}
+      />
+      <ControlledInput
         name="ownerName"
         label="Właściciel"
-        help={errors.ownerName?.message as string}
-        validateStatus={errors.ownerName ? "error" : ""}
-      >
-        <Controller
-          name="ownerName"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
+        control={control}
+        errors={errors}
+        defaultValue={itemData.ownerName}
+      />
       <Form.Item
         name="tagIds"
         label="Tagi"
@@ -120,18 +109,13 @@ export const EditItemForm: React.FC<{
           )}
         />
       </Form.Item>
-      <Form.Item
+      <ControlledTextArea
         name="description"
-        label="Opis przedmiotu"
-        help={errors.description?.message as string}
-        validateStatus={errors.description ? "error" : ""}
-      >
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => <TextArea {...field} rows={6} />}
-        />
-      </Form.Item>
+        label="Opis"
+        control={control}
+        errors={errors}
+        defaultValue={itemData.description}
+      />
       <Button type="primary" htmlType="submit" loading={isLoading}>
         Wyślij
       </Button>

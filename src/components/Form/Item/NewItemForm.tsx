@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, message } from "antd";
 import Title from "antd/es/typography/Title";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import TextArea from "antd/es/input/TextArea";
 import { useCreateItem } from "../../../api/items";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
 
 export const newItemSchema = z.object({
   name: z.string(),
@@ -41,35 +42,18 @@ export const NewItemForm: React.FC<{
       <Title style={{ marginBottom: "1rem" }}>
         Dodaj nowy przedmiot fabularny
       </Title>
-      <Form.Item
+      <ControlledInput
         name="name"
-        rules={[{ required: true }]}
-        help={errors.name?.message as string}
-        validateStatus={errors.name ? "error" : ""}
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <Input placeholder="Nazwa przedmiotu" {...field} />
-          )}
-        />
-      </Form.Item>
-      <Form.Item
+        label="Nazwa"
+        control={control}
+        errors={errors}
+      />
+      <ControlledTextArea
         name="description"
-        rules={[{ required: true, message: "Podaj opis przedmiotu" }]}
-        help={errors.description?.message as string}
-        validateStatus={errors.description ? "error" : ""}
-      >
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <TextArea placeholder="Podaj Opis" {...field} rows={6} />
-          )}
-        />
-      </Form.Item>
-
+        label="Opis"
+        control={control}
+        errors={errors}
+      />
       <Button htmlType="submit" type="primary">
         Dodaj
       </Button>

@@ -134,6 +134,7 @@ export const useEditItem = (itemId: string) => {
         queryKey: ["items"],
         exact: false,
       });
+      message.success("Rekord zaktualizowany");
     },
   });
 };

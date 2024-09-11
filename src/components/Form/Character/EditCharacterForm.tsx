@@ -1,11 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, InputNumber, message } from "antd";
+import { Button, Form, message } from "antd";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import Title from "antd/es/typography/Title";
-import Input from "antd/es/input/Input";
-import TextArea from "antd/es/input/TextArea";
 import { CharacterDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
 import { useEditCharacter } from "../../../api/characters";
 import { useGetSeries } from "../../../api/series";
@@ -13,6 +11,9 @@ import { useGetRpgSystems } from "../../../api/rpgSystems";
 import { useGetItems } from "../../../api/items";
 import { useGetTags } from "../../../api/tags";
 import { CustomSelection } from "../../UI/Select/CustomSelection";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
+import { ControlledNumberInput } from "../../UI/Input/ControlledNumberInput";
 
 export const editCharacterSchema = z.object({
   firstName: z.string(),
@@ -119,42 +120,27 @@ export const EditCharacterForm: React.FC<{
       <Title style={{ marginBottom: "1rem" }} level={2}>
         Edytuj postać {characterData.firstName} {characterData.lastName}
       </Title>
-      <Form.Item
+      <ControlledInput
         name="firstName"
         label="Imię"
-        help={errors.firstName?.message as string}
-        validateStatus={errors.firstName ? "error" : ""}
-      >
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        control={control}
+        errors={errors}
+        defaultValue={characterData.firstName}
+      />
+      <ControlledInput
         name="lastName"
         label="Nazwisko"
-        help={errors.lastName?.message as string}
-        validateStatus={errors.lastName ? "error" : ""}
-      >
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        control={control}
+        errors={errors}
+        defaultValue={characterData.lastName}
+      />
+      <ControlledNumberInput
         name="age"
         label="Wiek"
-        help={errors.age?.message as string}
-        validateStatus={errors.age ? "error" : ""}
-      >
-        <Controller
-          name="age"
-          control={control}
-          render={({ field }) => <InputNumber {...field} />}
-        />
-      </Form.Item>
+        control={control}
+        errors={errors}
+        defaultValue={characterData.age}
+      />
       <Form.Item
         name="seriesId"
         label="Występuje w serii"
@@ -257,18 +243,13 @@ export const EditCharacterForm: React.FC<{
           )}
         />
       </Form.Item>
-      <Form.Item
+      <ControlledTextArea
         name="description"
         label="Opis"
-        help={errors.description?.message as string}
-        validateStatus={errors.description ? "error" : ""}
-      >
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => <TextArea {...field} rows={6} />}
-        />
-      </Form.Item>
+        control={control}
+        errors={errors}
+        defaultValue={characterData.description}
+      />
       <Button type="primary" htmlType="submit">
         Wyślij
       </Button>

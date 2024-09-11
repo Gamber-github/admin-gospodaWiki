@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, Input, InputNumber, message } from "antd";
+import { Button, Form, message } from "antd";
 import Title from "antd/es/typography/Title";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,7 +7,9 @@ import { useAddCharacter } from "../../../api/characters";
 import { useGetSeries } from "../../../api/series";
 import { useGetRpgSystems } from "../../../api/rpgSystems";
 import { CustomSelection } from "../../UI/Select/CustomSelection";
-import TextArea from "antd/es/input/TextArea";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledNumberInput } from "../../UI/Input/ControlledNumberInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
 
 export const newCharacterSchema = z.object({
   firstName: z.string(),
@@ -71,43 +73,25 @@ export const NewCharacterForm: React.FC<{
   return (
     <Form onSubmitCapture={handleSubmit(submit)}>
       <Title style={{ marginBottom: "1rem" }}>Dodaj nową postać</Title>
-      <Form.Item
+      <ControlledInput
         name="firstName"
-        rules={[{ message: "Podaj imię gracza" }]}
-        help={errors.firstName?.message as string}
-        validateStatus={errors.firstName ? "error" : ""}
-      >
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => <Input placeholder="Imię" {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        label="Imię"
+        control={control}
+        errors={errors}
+      />
+      <ControlledInput
         name="lastName"
-        rules={[{ message: "Podaj nazwisko gracza" }]}
-        help={errors.firstName?.message as string}
-        validateStatus={errors.firstName ? "error" : ""}
-      >
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => <Input placeholder="Nazwisko" {...field} />}
-        />
-      </Form.Item>
+        label="Nazwisko"
+        control={control}
+        errors={errors}
+      />
 
-      <Form.Item
+      <ControlledNumberInput
         name="age"
-        rules={[{ required: false, message: "Podaj wiek postaci" }]}
-        help={errors.age?.message as string}
-        validateStatus={errors.age ? "error" : ""}
-      >
-        <Controller
-          name="age"
-          control={control}
-          render={({ field }) => <InputNumber placeholder="Wiek" {...field} />}
-        />
-      </Form.Item>
+        label="Wiek"
+        control={control}
+        errors={errors}
+      />
       <Form.Item
         name="seriesId"
         label="Występuje w serii"
@@ -151,20 +135,12 @@ export const NewCharacterForm: React.FC<{
         />
       </Form.Item>
 
-      <Form.Item
+      <ControlledTextArea
         name="description"
-        rules={[{ required: false, message: "Podaj opis postaci" }]}
-        help={errors.description?.message as string}
-        validateStatus={errors.description ? "error" : ""}
-      >
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <TextArea placeholder="Opis postaci" {...field} />
-          )}
-        />
-      </Form.Item>
+        label="Opis"
+        control={control}
+        errors={errors}
+      />
 
       <Button htmlType="submit" type="primary">
         Dodaj
