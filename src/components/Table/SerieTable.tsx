@@ -8,12 +8,9 @@ import { EditOutlined } from "@ant-design/icons";
 import DeleteButton from "../UI/Buttons/DeleteButton";
 import { SerieIdParam, useDeleteSeries, useGetSeries } from "../../api/series";
 import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
+import { DefaultTableData } from "./utils";
 
-type SeriesData = {
-  seriesId: number;
-  name: string;
-  isPublished: boolean;
-};
+type TableData = DefaultTableData & { seriesId: number };
 
 const { Text } = Typography;
 
@@ -29,7 +26,7 @@ export const SerieTable: React.FC = () => {
 
   const { navigate } = useNav();
 
-  const columns: ColumnType<SeriesData>[] = [
+  const columns: ColumnType<TableData>[] = [
     {
       title: "Nazwa",
       dataIndex: "name",

@@ -165,12 +165,7 @@ export const itemResponseSchema = z.object({
   isPublished: z.boolean(),
 });
 
-export const ItemsResponseSchema = z.object({
-  items: z.array(itemResponseSchema),
-  totalItemCount: z.number(),
-  pageNumber: z.number(),
-  pageSize: z.number(),
-});
+export const ItemsResponseSchema = buildListEndpointSchema(itemResponseSchema);
 
 export const itemDetailsResponseSchema = z.object({
   itemId: z.number(),
@@ -191,6 +186,72 @@ export const tagResponseSchema = z.object({
 
 export const TagsListResponseSchema =
   buildListEndpointSchema(tagResponseSchema);
+
+export const EventResponseSchema = z.object({
+  eventId: z.number(),
+  name: z.string(),
+  description: z.string().optional(),
+  isPublished: z.boolean(),
+  eventUrl: z.string().optional(),
+  date: z.string().optional(),
+  imagePath: z.string().optional(),
+});
+
+export const EventsListResponseSchema =
+  buildListEndpointSchema(EventResponseSchema);
+
+export const locationReferenceResponseSchema = z.object({
+  locationId: z.number().optional(),
+  name: z.string().optional(),
+});
+
+export const eventDetailsResponseSchema = z.object({
+  eventId: z.number(),
+  name: z.string(),
+  description: z.string().optional(),
+  isPublished: z.boolean(),
+  eventUrl: z.string().optional(),
+  date: z.string().optional(),
+  imagePath: z.string().optional(),
+  location: locationReferenceResponseSchema,
+  tags: z.array(tagsResponseSchema),
+});
+
+export const locationResponseSchema = z.object({
+  locationId: z.number(),
+  name: z.string(),
+  isPublished: z.boolean(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  locationUrl: z.string().optional(),
+});
+
+export const locationsListResponseSchema = buildListEndpointSchema(
+  locationResponseSchema
+);
+
+export const eventReferenceResponseSchema = z.object({
+  eventId: z.number(),
+  name: z.string(),
+});
+
+export const locationDetailsResponseSchema = z.object({
+  locationId: z.number(),
+  name: z.string(),
+  isPublished: z.boolean(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  locationURL: z.string().optional(),
+  events: z.array(eventReferenceResponseSchema),
+});
+
+export type LocationDetailsResponseSchema = z.infer<
+  typeof locationDetailsResponseSchema
+>;
+
+export type EventDetailsResponseSchema = z.infer<
+  typeof eventDetailsResponseSchema
+>;
 
 export type ItemDetailsResponseSchema = z.infer<
   typeof itemDetailsResponseSchema

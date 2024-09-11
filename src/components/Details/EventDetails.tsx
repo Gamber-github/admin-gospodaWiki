@@ -1,27 +1,25 @@
 import { DescriptionsProps } from "antd/es/descriptions";
-import { Descriptions } from "../UI/Descriptions/Descriptions";
 import React from "react";
-import { RpgSystemDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+
 import Badge from "antd/es/badge";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
-import message from "antd/es/message";
-import { usePublishRpgSystem } from "../../api/rpgSystems";
-import { EditRpgSystemForm } from "../Form/RpgSystem/EditRpgSystem";
-import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
-import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
 
-export const RpgSystemDetails: React.FC<{
-  data: RpgSystemDetailsResponseSchema;
+import message from "antd/es/message";
+import { EventDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+import { usePublishEvent } from "../../api/events";
+import { EditEventForm } from "../Form/Event/EditEventForm";
+import { Descriptions } from "../UI/Descriptions/Descriptions";
+import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
+import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
+
+export const EventDetails: React.FC<{
+  data: EventDetailsResponseSchema;
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const {
-    mutateAsync: publishMutateAsync,
-    error,
-    status,
-  } = usePublishRpgSystem();
+  const { mutateAsync: publishMutateAsync, error, status } = usePublishEvent();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -41,38 +39,18 @@ export const RpgSystemDetails: React.FC<{
     },
     {
       key: "3",
-      label: "Powiązane historie",
-      children: (
-        <>
-          {data.stories.map((story) => (
-            <p key={story.storyId}>{story.name}</p>
-          ))}
-        </>
-      ),
+      label: "Data rozpoczęcia",
+      children: <p>{data.date}</p>,
     },
     {
       key: "4",
-      label: "Powiązane serie",
-      children: (
-        <>
-          {data.series.map((serie) => (
-            <p key={serie.seriesId}>{serie.name}</p>
-          ))}
-        </>
-      ),
+      label: "Miejsce",
+      children: <p>{data.location.name}</p>,
     },
     {
       key: "5",
-      label: "Powiązane postacie",
-      children: (
-        <>
-          {data.characters.map((character) => (
-            <p key={character.characterId}>
-              {character.firstName + " " + character.lastName}
-            </p>
-          ))}
-        </>
-      ),
+      label: "URL wydarzenia",
+      children: <p>{data.eventUrl}</p>,
     },
     {
       key: "6",
@@ -95,9 +73,10 @@ export const RpgSystemDetails: React.FC<{
 
   const publish = async () => {
     try {
-      await publishMutateAsync({ rpgSystemId: data.rpgSystemId.toString() });
+      await publishMutateAsync({ eventId: data.eventId.toString() });
+      message.success("Zaktualizowano status publikacji");
     } catch (error) {
-      message.error("Coś poszło nie tak");
+      message.error("Wystąpił błąd podczas publikacji");
     }
   };
 
@@ -110,8 +89,7 @@ export const RpgSystemDetails: React.FC<{
         showModal={showModal}
         status={status}
       />
-      <Descriptions title="System RPG" items={items} />
-
+      <Descriptions items={items} title="Szczegóły wydarzenia" />
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -120,7 +98,7 @@ export const RpgSystemDetails: React.FC<{
           onCancel={closeModal}
           width={900}
         >
-          <EditRpgSystemForm onSubmit={closeModal} rpgSystemData={data} />
+          <EditEventForm onSubmit={closeModal} eventData={data} />
         </Modal>
       )}
     </DetailsConatiner>

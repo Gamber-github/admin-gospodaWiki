@@ -1,30 +1,24 @@
-import Descriptions, { DescriptionsProps } from "antd/es/descriptions";
+import { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
 
 import Badge from "antd/es/badge";
-import styled from "styled-components";
-import Button from "antd/es/button";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
-import Popconfirm from "antd/es/popconfirm";
-import message from "antd/es/message";
+
 import { ItemDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import { usePublishItem } from "../../api/items";
 import { EditItemForm } from "../Form/Item/EditItemForm";
-import { StatusAsyncHelper } from "../AsyncHelper/StatusAsyncHelper";
+import { Descriptions } from "../UI/Descriptions/Descriptions";
+import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
+import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
 
 export const ItemDetails: React.FC<{
   data: ItemDetailsResponseSchema;
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const {
-    mutateAsync: publishMutateAsync,
-    error,
-    status,
-    isLoading,
-  } = usePublishItem();
+  const { mutateAsync: publishMutateAsync, error, status } = usePublishItem();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -81,31 +75,15 @@ export const ItemDetails: React.FC<{
   const publish = () => publishMutateAsync({ id: data.itemId.toString() });
 
   return (
-    <Conatiner>
-      <Descriptions
-        title="Przedmiot fabularny"
-        items={items}
-        bordered
-        column={3}
-        extra={
-          <>
-            <Button type="primary" onClick={showModal}>
-              Edytuj
-            </Button>
-            <Popconfirm
-              title="Jesteś pewien?"
-              okText="Tak"
-              cancelText="Nie"
-              onConfirm={publish}
-            >
-              <Button type="dashed" loading={isLoading}>
-                {!data.isPublished ? "Opublikuj" : "Ukryj"}
-              </Button>
-            </Popconfirm>
-            {error && message.error("Coś poszło nie tak")}
-          </>
-        }
+    <DetailsConatiner>
+      <DetailsPanel
+        error={error}
+        isPublished={data.isPublished}
+        publish={publish}
+        showModal={showModal}
+        status={status}
       />
+      <Descriptions title="Przedmiot fabularny" items={items} />
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -117,14 +95,6 @@ export const ItemDetails: React.FC<{
           <EditItemForm onSubmit={closeModal} itemData={data} />
         </Modal>
       )}
-    </Conatiner>
+    </DetailsConatiner>
   );
 };
-
-const Conatiner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;

@@ -6,22 +6,24 @@ import { useNav } from "../../routes/router";
 import { ColumnType } from "antd/es/table";
 import { EditOutlined } from "@ant-design/icons";
 import DeleteButton from "../UI/Buttons/DeleteButton";
-import { useDeleteItem, useGetItems } from "../../api/items";
+import { EventIdParam } from "../../api/events";
+import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
+import { useDeleteEvent, useGetEvents } from "../../api/events";
 import { DefaultTableData } from "./utils";
 
-type TableData = DefaultTableData & { itemId: number };
+type TableData = DefaultTableData & { eventId: number };
 
 const { Text } = Typography;
 
-export const ItemsTable: React.FC = () => {
+export const EventsTable: React.FC = () => {
   const [page, setPage] = useState(1);
 
-  const { data, status, error } = useGetItems({
+  const { data, status, error } = useGetEvents({
     pageSize: DEFAULT_TABLE_SIZE,
     pageNumber: page,
   });
 
-  const { mutateAsync, status: DeleteStatus } = useDeleteItem();
+  const { mutateAsync, status: DeleteStatus } = useDeleteEvent();
 
   const { navigate } = useNav();
 
@@ -44,22 +46,21 @@ export const ItemsTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { itemId }) => (
-        <>
+      render: (text, { eventId }) => (
+        <ButtonsConteiner>
           <Button
             type="default"
-            key={itemId}
-            style={{ marginRight: 10 }}
-            onClick={() => navigate("editItem", { id: itemId.toString() })}
+            key={eventId}
+            onClick={() => navigate("editEvent", { id: eventId.toString() })}
           >
             <EditOutlined />
           </Button>
-          <DeleteButton<string>
-            payload={itemId.toString()}
+          <DeleteButton<EventIdParam>
+            payload={{ eventId: eventId.toString() }}
             mutateAsync={mutateAsync}
             status={DeleteStatus}
           />
-        </>
+        </ButtonsConteiner>
       ),
     },
   ];
@@ -71,7 +72,7 @@ export const ItemsTable: React.FC = () => {
     <Table
       columns={columns}
       dataSource={data.items}
-      rowKey={(item) => item.itemId}
+      rowKey={(item) => item.eventId}
       pagination={buildPagination(data, setPage)}
     />
   );

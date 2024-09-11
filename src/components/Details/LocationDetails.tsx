@@ -1,45 +1,35 @@
 import { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
-import { PlayerDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+
 import Badge from "antd/es/badge";
-import styled from "styled-components";
-import Button from "antd/es/button";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
-import Popconfirm from "antd/es/popconfirm";
-import { usePublishPlayer } from "../../api/players";
+
 import message from "antd/es/message";
-import { EditPlayerForm } from "../Form/Player/EditPlayerForm";
+
 import { Descriptions } from "../UI/Descriptions/Descriptions";
 import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
 import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
+import { LocationDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+import { usePublishLocation } from "../../api/locations";
+import { EditLocationForm } from "../Form/Location/EditLocationForm";
 
-export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
-  data,
-}) => {
+export const LocationDetails: React.FC<{
+  data: LocationDetailsResponseSchema;
+}> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const { mutateAsync, error, status } = usePublishPlayer();
+  const { mutateAsync: publishMutateAsync, status } = usePublishLocation();
 
   const items: DescriptionsProps["items"] = [
     {
       key: "1",
-      label: "Imię",
-      children: <p>{data.firstName}</p>,
+      label: "Nazwa",
+      children: <p>{data.name}</p>,
     },
     {
       key: "2",
-      label: "Nazwisko",
-      children: <p>{data.lastName}</p>,
-    },
-    {
-      key: "3",
-      label: "Wiek",
-      children: <p>{data.age}</p>,
-    },
-    {
-      key: "4",
       label: "Opublikowany",
       children: (
         <Badge
@@ -49,42 +39,51 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
       ),
     },
     {
+      key: "3",
+      label: "Adres",
+      children: <p>{data.address}</p>,
+    },
+    {
+      key: "4",
+      label: "Miasto",
+      children: <p>{data.city}</p>,
+    },
+    {
       key: "5",
-      label: "Serie",
+      label: "Url lokacji",
+      children: <a href={data.locationURL}>{data.locationURL}</a>,
+    },
+    {
+      key: "6",
+      label: "Eventy",
       children: (
         <>
-          {data.series.map((serie, key) => (
-            <p key={key}>{serie.name}</p>
+          {data.events.map((tag, key) => (
+            <p key={key}>{tag.name}</p>
           ))}
         </>
       ),
     },
-    {
-      key: "6",
-      label: "O mnie",
-      children: <p>{data.about}</p>,
-    },
   ];
 
-  const publish = () => {
+  const publish = async () => {
     try {
-      mutateAsync({ playerId: data.playerId.toString() });
-      message.success("Gracz zaktualizowany");
+      await publishMutateAsync({ locationId: data.locationId.toString() });
+      message.success("Zaktualizowano status publikacji");
     } catch (error) {
-      message.error("Coś poszło nie tak");
+      message.error("Wystąpił błąd podczas publikacji");
     }
   };
 
   return (
     <DetailsConatiner>
       <DetailsPanel
-        error={error}
         isPublished={data.isPublished}
         publish={publish}
         showModal={showModal}
         status={status}
       />
-      <Descriptions title="Dane gracza" items={items} />
+      <Descriptions items={items} title="Szczegóły wydarzenia" />
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -93,7 +92,7 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
           onCancel={closeModal}
           width={900}
         >
-          <EditPlayerForm onSubmit={closeModal} playerData={data} />
+          <EditLocationForm onSubmit={closeModal} locationData={data} />
         </Modal>
       )}
     </DetailsConatiner>

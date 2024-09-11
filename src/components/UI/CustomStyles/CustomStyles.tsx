@@ -38,3 +38,15 @@ export const ButtonsConteiner = styled.div`
   display: flex;
   gap: 1rem;
 `;
+
+export const DetailsConatiner = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+export const ButtonContainer = styled.div`
+  margin-bottom: 1rem;
+`;

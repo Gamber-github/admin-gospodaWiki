@@ -3,6 +3,7 @@ import { Menu, MenuProps } from "antd";
 import {
   BookOutlined,
   CalendarOutlined,
+  CrownOutlined,
   EditOutlined,
   HomeOutlined,
   LogoutOutlined,
@@ -74,6 +75,12 @@ const Sidebar: React.FC = () => {
           label: "Serie fabularne",
           icon: <EditOutlined />,
           onClick: () => navigate("series"),
+        },
+        {
+          key: "adventures",
+          label: "Wydarzenia fabularne",
+          icon: <CrownOutlined />,
+          onClick: () => navigate("adventures"),
         },
       ],
     },
