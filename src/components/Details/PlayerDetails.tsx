@@ -2,12 +2,9 @@ import { DescriptionsProps } from "antd/es/descriptions";
 import React from "react";
 import { PlayerDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
-import styled from "styled-components";
-import Button from "antd/es/button";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
-import Popconfirm from "antd/es/popconfirm";
 import { usePublishPlayer } from "../../api/players";
 import message from "antd/es/message";
 import { EditPlayerForm } from "../Form/Player/EditPlayerForm";
@@ -20,7 +17,7 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
 }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const { mutateAsync, error, status } = usePublishPlayer();
+  const { mutateAsync, status } = usePublishPlayer();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -62,7 +59,9 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
     {
       key: "6",
       label: "O mnie",
-      children: <p>{data.about}</p>,
+      children: (
+        <div dangerouslySetInnerHTML={{ __html: data.about || "" }}></div>
+      ),
     },
   ];
 
@@ -78,7 +77,6 @@ export const PlayerDetails: React.FC<{ data: PlayerDetailsResponseSchema }> = ({
   return (
     <DetailsConatiner>
       <DetailsPanel
-        error={error}
         isPublished={data.isPublished}
         publish={publish}
         showModal={showModal}

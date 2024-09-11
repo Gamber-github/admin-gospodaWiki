@@ -1,50 +1,88 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Form, Input as AntInput } from "antd";
-import { ControlledElement } from "../types";
-import { Controller } from "react-hook-form";
-import { TextAreaProps } from "antd/es/input";
-import { ControlledInputProps } from "../Input/ControlledInput";
+import React, { useState, useEffect } from "react";
+import { Form } from "antd";
+import { Controller, Control, FieldErrors } from "react-hook-form";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import the styles for ReactQuill
 
-const { TextArea: AntTextArea } = AntInput;
+interface ControlledInputProps {
+  control: Control;
+  errors: FieldErrors;
+  name: string;
+  label: string;
+  defaultValue?: string;
+  disabled?: boolean;
+}
 
-export const TextArea: React.FC<
-  TextAreaProps & { isError?: boolean; maxLength?: number }
-> = ({ maxLength, isError, ...props }) => {
-  return (
-    <AntTextArea
-      {...props}
-      status={isError ? "error" : ""}
-      rows={6}
-      maxLength={maxLength}
-    />
-  );
-};
-
-export const ControlledTextArea: ControlledElement<ControlledInputProps> = ({
+export const ControlledTextArea: React.FC<ControlledInputProps> = ({
   control,
   errors,
   name,
   label,
   defaultValue,
   disabled,
-}) => (
-  <Form.Item
-    label={label}
-    help={errors[name]?.message as string}
-    validateStatus={errors[name] ? "error" : ""}
-  >
-    <Controller
-      name={name}
-      control={control}
-      defaultValue={defaultValue}
-      render={({ field: { ref, ...field } }) => (
-        <TextArea
-          {...field}
-          placeholder={label || name}
-          isError={!!errors[name]?.message}
-          disabled={disabled}
-        />
-      )}
-    />
-  </Form.Item>
-);
+}) => {
+  const [editorValue, setEditorValue] = useState(defaultValue || "");
+
+  useEffect(() => {
+    setEditorValue(defaultValue || "");
+  }, [defaultValue]);
+
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link"],
+      ["clean"], // remove formatting button
+    ],
+  };
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+  ];
+
+  return (
+    <Form.Item
+      label={label}
+      help={errors[name]?.message as string}
+      validateStatus={errors[name] ? "error" : ""}
+    >
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={defaultValue}
+        render={({ field }) => (
+          <ReactQuill
+            {...field}
+            value={editorValue}
+            onChange={(content) => {
+              setEditorValue(content);
+              field.onChange(content);
+            }}
+            placeholder={label || name}
+            readOnly={disabled}
+            modules={modules}
+            formats={formats}
+          />
+        )}
+      />
+    </Form.Item>
+  );
+};
