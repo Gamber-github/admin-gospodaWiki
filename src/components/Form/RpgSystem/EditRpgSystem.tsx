@@ -4,12 +4,12 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import Title from "antd/es/typography/Title";
-import Input from "antd/es/input/Input";
-import TextArea from "antd/es/input/TextArea";
 import { CustomSelection } from "../../UI/Select/CustomSelection";
 import { useEditRpgSystem } from "../../../api/rpgSystems";
 import { RpgSystemDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
 import { useGetTags } from "../../../api/tags";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
 
 export const editRpgSystemSchema = z.object({
   rpgSystemId: z.number(),
@@ -80,18 +80,13 @@ export const EditRpgSystemForm: React.FC<{
       <Title style={{ marginBottom: "1rem" }} level={2}>
         Edytuj system {rpgSystemData.name}
       </Title>
-      <Form.Item
+      <ControlledInput
         name="name"
-        label="Nazwa"
-        help={errors.name?.message as string}
-        validateStatus={errors.name ? "error" : ""}
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
+        label="Nazwisko"
+        control={control}
+        errors={errors}
+        defaultValue={rpgSystemData.name}
+      />
       <Form.Item
         name="tagsIds"
         label="Tagi"
@@ -116,18 +111,13 @@ export const EditRpgSystemForm: React.FC<{
           )}
         />
       </Form.Item>
-      <Form.Item
+      <ControlledTextArea
         name="description"
         label="Opis"
-        help={errors.description?.message as string}
-        validateStatus={errors.description ? "error" : ""}
-      >
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => <TextArea {...field} rows={6} />}
-        />
-      </Form.Item>
+        control={control}
+        errors={errors}
+        defaultValue={rpgSystemData.description}
+      />
       <Button type="primary" htmlType="submit">
         Wyślij
       </Button>

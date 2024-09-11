@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, Input } from "antd";
+import { Button, Form } from "antd";
 import Title from "antd/es/typography/Title";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAddTag } from "../../../api/tags";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
 
 export const newTagSchema = z.object({
   name: z.string(),
@@ -33,18 +34,12 @@ export const NewTagForm: React.FC<{
   return (
     <Form onSubmitCapture={handleSubmit(submit)}>
       <Title style={{ marginBottom: "1rem" }}>Dodaj nowy Tag</Title>
-      <Form.Item
+      <ControlledInput
         name="name"
-        rules={[{ required: true }]}
-        help={errors.name?.message as string}
-        validateStatus={errors.name ? "error" : ""}
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => <Input placeholder="Tag" {...field} />}
-        />
-      </Form.Item>
+        label="Nazwa"
+        control={control}
+        errors={errors}
+      />
       <Button htmlType="submit" type="primary">
         Dodaj
       </Button>

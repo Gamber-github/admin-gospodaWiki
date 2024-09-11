@@ -4,8 +4,6 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import Title from "antd/es/typography/Title";
-import Input from "antd/es/input/Input";
-import TextArea from "antd/es/input/TextArea";
 import { CustomSelection } from "../../UI/Select/CustomSelection";
 import { SerieDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
 import { useEditSerie } from "../../../api/series";
@@ -13,6 +11,8 @@ import { useGetRpgSystems } from "../../../api/rpgSystems";
 import { useGetPlayers } from "../../../api/players";
 import { useGetCharacters } from "../../../api/characters";
 import { useGetTags } from "../../../api/tags";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
 
 export const editSerieSchema = z.object({
   name: z.string(),
@@ -115,30 +115,20 @@ export const EditSerieForm: React.FC<{
       <Title style={{ marginBottom: "1rem" }} level={2}>
         Edytuj Serię {serieData.name}
       </Title>
-      <Form.Item
+      <ControlledInput
         name="name"
         label="Nazwa"
-        help={errors.name?.message as string}
-        validateStatus={errors.name ? "error" : ""}
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        control={control}
+        errors={errors}
+        defaultValue={serieData.name}
+      />
+      <ControlledInput
         name="youtubePlaylistId"
-        label="Playlista YouTube"
-        help={errors.youtubePlaylistId?.message as string}
-        validateStatus={errors.youtubePlaylistId ? "error" : ""}
-      >
-        <Controller
-          name="youtubePlaylistId"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
+        label="Playlista Youtube"
+        control={control}
+        errors={errors}
+        defaultValue={serieData.youtubePlaylistId}
+      />
       <Form.Item
         name="rpgSystemId"
         label="Powiązany system RPG"
@@ -277,18 +267,13 @@ export const EditSerieForm: React.FC<{
           )}
         />
       </Form.Item>
-      <Form.Item
+      <ControlledTextArea
         name="description"
         label="Opis"
-        help={errors.description?.message as string}
-        validateStatus={errors.description ? "error" : ""}
-      >
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => <TextArea {...field} rows={6} />}
-        />
-      </Form.Item>
+        control={control}
+        errors={errors}
+        defaultValue={serieData.description}
+      />
       <Button type="primary" htmlType="submit">
         Wyślij
       </Button>

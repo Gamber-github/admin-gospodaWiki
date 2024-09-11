@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, message } from "antd";
 import Title from "antd/es/typography/Title";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import TextArea from "antd/es/input/TextArea";
 import { useAddSerie } from "../../../api/series";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
 
 export const newSerieSchema = z.object({
   name: z.string(),
@@ -41,46 +42,24 @@ export const NewSerieForm: React.FC<{
   return (
     <Form onSubmitCapture={handleSubmit(submit)}>
       <Title style={{ marginBottom: "1rem" }}>Dodaj nową serię</Title>
-      <Form.Item
+      <ControlledInput
         name="name"
-        rules={[{ required: true }]}
-        help={errors.name?.message as string}
-        validateStatus={errors.name ? "error" : ""}
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => <Input placeholder="Nazwa serii" {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        label="Nazwa"
+        control={control}
+        errors={errors}
+      />
+      <ControlledInput
         name="youtubePlaylistId"
-        rules={[{ required: true, message: "Podaj ID playlisty na Youtube" }]}
-        help={errors.youtubePlaylistId?.message as string}
-        validateStatus={errors.youtubePlaylistId ? "error" : ""}
-      >
-        <Controller
-          name="youtubePlaylistId"
-          control={control}
-          render={({ field }) => (
-            <Input placeholder="Podaj ID listy na Youtube" {...field} />
-          )}
-        />
-      </Form.Item>
-      <Form.Item
+        label="Id playlisty youtube"
+        control={control}
+        errors={errors}
+      />
+      <ControlledTextArea
         name="description"
-        rules={[{ required: true, message: "Podaj opis serii" }]}
-        help={errors.description?.message as string}
-        validateStatus={errors.description ? "error" : ""}
-      >
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <TextArea placeholder="Podaj Opis" {...field} rows={6} />
-          )}
-        />
-      </Form.Item>
+        label="Opis"
+        control={control}
+        errors={errors}
+      />
 
       <Button htmlType="submit" type="primary">
         Dodaj

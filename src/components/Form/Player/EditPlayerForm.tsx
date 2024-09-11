@@ -1,15 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, InputNumber, message } from "antd";
+import { Button, Form, message } from "antd";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEditPlayer } from "../../../api/players";
 import { PlayerDetailsResponseSchema } from "../../../api/ResponseSchema/responseSchemas";
 import Title from "antd/es/typography/Title";
-import Input from "antd/es/input/Input";
-import TextArea from "antd/es/input/TextArea";
 import { CustomSelection } from "../../UI/Select/CustomSelection";
 import { useGetSeries } from "../../../api/series";
+import { ControlledInput } from "../../UI/Input/ControlledInput";
+import { ControlledNumberInput } from "../../UI/Input/ControlledNumberInput";
+import { ControlledTextArea } from "../../UI/TextArea/ControlledTextArea";
 
 export const EditPlayerSchema = z.object({
   firstName: z.string(),
@@ -72,42 +73,27 @@ export const EditPlayerForm: React.FC<{
       <Title style={{ marginBottom: "1rem" }} level={2}>
         Edytuj gracza {playerData.firstName} {playerData.lastName}
       </Title>
-      <Form.Item
+      <ControlledInput
         name="firstName"
         label="Imię"
-        help={errors.firstName?.message as string}
-        validateStatus={errors.firstName ? "error" : ""}
-      >
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        control={control}
+        errors={errors}
+        defaultValue={playerData.firstName}
+      />
+      <ControlledInput
         name="lastName"
-        label="Nazwisko"
-        help={errors.lastName?.message as string}
-        validateStatus={errors.lastName ? "error" : ""}
-      >
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => <Input {...field} />}
-        />
-      </Form.Item>
-      <Form.Item
+        label="Imię"
+        control={control}
+        errors={errors}
+        defaultValue={playerData.lastName}
+      />
+      <ControlledNumberInput
         name="age"
         label="Wiek"
-        help={errors.age?.message as string}
-        validateStatus={errors.age ? "error" : ""}
-      >
-        <Controller
-          name="age"
-          control={control}
-          render={({ field }) => <InputNumber {...field} />}
-        />
-      </Form.Item>
+        control={control}
+        errors={errors}
+        defaultValue={playerData.age}
+      />
       <Form.Item
         name="seriesId"
         label="Występuje w seriach"
@@ -132,18 +118,13 @@ export const EditPlayerForm: React.FC<{
           )}
         />
       </Form.Item>
-      <Form.Item
+      <ControlledTextArea
         name="about"
         label="O mnie"
-        help={errors.about?.message as string}
-        validateStatus={errors.about ? "error" : ""}
-      >
-        <Controller
-          name="about"
-          control={control}
-          render={({ field }) => <TextArea {...field} rows={6} />}
-        />
-      </Form.Item>
+        control={control}
+        errors={errors}
+        defaultValue={playerData.about}
+      />
       <Button type="primary" htmlType="submit">
         Wyślij
       </Button>
