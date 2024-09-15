@@ -19,7 +19,7 @@ export const EventDetails: React.FC<{
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const { mutateAsync: publishMutateAsync, error, status } = usePublishEvent();
+  const { mutateAsync: publishMutateAsync, status } = usePublishEvent();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -83,7 +83,6 @@ export const EventDetails: React.FC<{
   return (
     <DetailsConatiner>
       <DetailsPanel
-        error={error}
         isPublished={data.isPublished}
         publish={publish}
         showModal={showModal}

@@ -45,7 +45,7 @@ export const SerieTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { seriesId }) => (
+      render: (_, { seriesId }) => (
         <ButtonsConteiner>
           <Button
             type="default"

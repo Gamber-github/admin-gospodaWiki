@@ -16,10 +16,10 @@ import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
 
 type CharacterData = {
   characterId: number;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  rpgSystem: string;
+  firstName?: string;
+  lastName?: string;
+  fullName?: string;
+  rpgSystem?: string;
   isPublished: boolean;
 };
 
@@ -43,7 +43,7 @@ export const CharactersTable: React.FC = () => {
       dataIndex: "fullName",
       key: "fullName",
       align: "center",
-      render: (text, data) => <Text>{data.fullName}</Text>,
+      render: (_, data) => <Text>{data.fullName}</Text>,
     },
     {
       title: "Występuje w",
@@ -64,7 +64,7 @@ export const CharactersTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { characterId }) => (
+      render: (_, { characterId }) => (
         <ButtonsConteiner>
           <Button
             type="default"
@@ -89,7 +89,7 @@ export const CharactersTable: React.FC = () => {
     return <StatusAsyncHelper status={status} error={error} />;
 
   return (
-    <Table
+    <Table<CharacterData>
       columns={columns}
       dataSource={data.items}
       rowKey={(item) => item.characterId}

@@ -186,8 +186,8 @@ export const EditCharacterForm: React.FC<{
               {...field}
               data={[
                 {
-                  valueId: characterData.rpgSystem.rpgSystemId,
-                  name: characterData.rpgSystem.name,
+                  valueId: characterData.rpgSystem.rpgSystemId ?? 0,
+                  name: characterData.rpgSystem.name ?? "",
                 },
               ]}
               onChange={field.onChange}

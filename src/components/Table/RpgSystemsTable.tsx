@@ -11,9 +11,8 @@ import {
   useDeleteRpgSystem,
   useGetRpgSystems,
 } from "../../api/rpgSystems";
-import { DefaultTableData } from "./utils";
 
-type TableData = DefaultTableData & { rpgSystemId: number };
+type TableData = { rpgSystemId: number; isPublished: boolean; name?: string };
 
 const { Text } = Typography;
 
@@ -48,7 +47,7 @@ export const RpgSystemsTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { rpgSystemId }) => (
+      render: (_, { rpgSystemId }) => (
         <>
           <Button
             type="default"
@@ -74,7 +73,7 @@ export const RpgSystemsTable: React.FC = () => {
     return <StatusAsyncHelper status={status} error={error} />;
 
   return (
-    <Table
+    <Table<TableData>
       columns={columns}
       dataSource={data.items}
       rowKey={(item) => item.rpgSystemId}

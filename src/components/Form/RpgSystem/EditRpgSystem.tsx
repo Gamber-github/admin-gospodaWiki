@@ -15,7 +15,6 @@ export const editRpgSystemSchema = z.object({
   rpgSystemId: z.number(),
   name: z.string(),
   description: z.string(),
-  storyIds: z.array(z.number()),
   tagsIds: z.array(z.number()),
   charactersIds: z.array(z.number()),
   seriesIds: z.array(z.number()),
@@ -38,7 +37,6 @@ export const EditRpgSystemForm: React.FC<{
       rpgSystemId: rpgSystemData.rpgSystemId,
       name: rpgSystemData.name,
       description: rpgSystemData.description,
-      storyIds: rpgSystemData.stories.map((story) => story.storyId),
       tagsIds: rpgSystemData.tags.map((tag) => tag.tagId),
       charactersIds: rpgSystemData.characters.map(
         (character) => character.characterId

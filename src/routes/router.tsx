@@ -27,6 +27,8 @@ import { Events } from "../pages/Event/Events";
 import { EventEdit } from "../pages/Event/EventEdit";
 import { Locations } from "../pages/Location/Locations";
 import { LocationEdit } from "../pages/Location/LocationEdit";
+import { Adventure } from "../pages/Adventure/Adventure";
+import { AdventureEdit } from "../pages/Adventure/AdventureEdit";
 
 export const APP_ROUTES = {
   main: "/",
@@ -159,6 +161,14 @@ export const routes: (RouteObject & { path: Route })[] = [
   {
     path: "/locations/:id/edit",
     element: <Private element={LocationEdit} />,
+  },
+  {
+    path: "/adventure",
+    element: <Private element={Adventure} />,
+  },
+  {
+    path: "/adventure/:id/edit",
+    element: <Private element={AdventureEdit} />,
   },
   {
     path: "*",

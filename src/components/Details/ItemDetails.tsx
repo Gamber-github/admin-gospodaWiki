@@ -18,7 +18,7 @@ export const ItemDetails: React.FC<{
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const { mutateAsync: publishMutateAsync, error, status } = usePublishItem();
+  const { mutateAsync: publishMutateAsync, status } = usePublishItem();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -77,7 +77,6 @@ export const ItemDetails: React.FC<{
   return (
     <DetailsConatiner>
       <DetailsPanel
-        error={error}
         isPublished={data.isPublished}
         publish={publish}
         showModal={showModal}

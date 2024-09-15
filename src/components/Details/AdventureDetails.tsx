@@ -1,32 +1,32 @@
 import { DescriptionsProps } from "antd/es/descriptions";
 import { Descriptions } from "../UI/Descriptions/Descriptions";
 import React from "react";
-import { RpgSystemDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
+import { AdventureDetailsResponseSchema } from "../../api/ResponseSchema/responseSchemas";
 import Badge from "antd/es/badge";
 import Modal from "antd/es/modal";
 
 import { useModalProps } from "../../hooks/useModalProps";
 import message from "antd/es/message";
-import { usePublishRpgSystem } from "../../api/rpgSystems";
-import { EditRpgSystemForm } from "../Form/RpgSystem/EditRpgSystem";
-import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
 import { DetailsConatiner } from "../UI/CustomStyles/CustomStyles";
+import { DetailsPanel } from "../DetailsPanel/DetailsPanel";
+import { usePublishAdventure } from "../../api/adventure";
+import { EditAdventureForm } from "../Form/Adventure/EditAdventureForm";
 
-export const RpgSystemDetails: React.FC<{
-  data: RpgSystemDetailsResponseSchema;
+export const AdventureDetails: React.FC<{
+  data: AdventureDetailsResponseSchema;
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const { mutateAsync: publishMutateAsync, status } = usePublishRpgSystem();
+  const { mutateAsync: publishMutateAsync, status } = usePublishAdventure();
 
   const items: DescriptionsProps["items"] = [
     {
-      key: "1",
-      label: "Nazwa",
-      children: <p>{data.name}</p>,
+      key: "Title",
+      label: "Tytuł",
+      children: <p>{data.title}</p>,
     },
     {
-      key: "2",
+      key: "Published",
       label: "Opublikowany",
       children: (
         <Badge
@@ -36,51 +36,48 @@ export const RpgSystemDetails: React.FC<{
       ),
     },
     {
-      key: "4",
-      label: "Powiązane serie",
+      key: "Characters",
+      label: "Postacie w przygodzie",
       children: (
         <>
-          {data.series.map((serie) => (
-            <p key={serie.seriesId}>{serie.name}</p>
+          {data.characters?.map((character, key) => (
+            <p key={key}>{character.firstName + " " + character.lastName}</p>
           ))}
         </>
       ),
     },
     {
-      key: "5",
-      label: "Powiązane postacie",
-      children: (
-        <>
-          {data.characters.map((character) => (
-            <p key={character.characterId}>
-              {character.firstName + " " + character.lastName}
-            </p>
-          ))}
-        </>
-      ),
+      key: "SystemRpg",
+      label: "System RPG",
+      children: <p>{data.rpgSystem?.name}</p>,
     },
     {
-      key: "6",
+      key: "Series",
+      label: "Seria przygód",
+      children: <p>{data.series?.name}</p>,
+    },
+    {
+      key: "Tagi",
       label: "Tagi",
       children: (
         <>
-          {data.tags.map((tag, key) => (
+          {data.tags?.map((tag, key) => (
             <p key={key}>{tag.name}</p>
           ))}
         </>
       ),
     },
     {
-      key: "7",
+      key: "Opis",
       label: "Opis",
-      span: 2,
       children: <p>{data.description}</p>,
     },
   ];
 
-  const publish = async () => {
+  const publish = () => {
     try {
-      await publishMutateAsync({ rpgSystemId: data.rpgSystemId.toString() });
+      publishMutateAsync({ adventureId: data.adventureId.toString() });
+      message.success("Rekord zaktualizowany");
     } catch (error) {
       message.error("Coś poszło nie tak");
     }
@@ -89,13 +86,12 @@ export const RpgSystemDetails: React.FC<{
   return (
     <DetailsConatiner>
       <DetailsPanel
-        isPublished={data.isPublished}
         publish={publish}
-        showModal={showModal}
         status={status}
+        isPublished={data.isPublished}
+        showModal={showModal}
       />
-      <Descriptions title="System RPG" items={items} />
-
+      <Descriptions title="Dane postaci" items={items} />
       {isModalOpen && (
         <Modal
           onClose={closeModal}
@@ -104,7 +100,7 @@ export const RpgSystemDetails: React.FC<{
           onCancel={closeModal}
           width={900}
         >
-          <EditRpgSystemForm onSubmit={closeModal} rpgSystemData={data} />
+          <EditAdventureForm onSubmit={closeModal} adventureData={data} />
         </Modal>
       )}
     </DetailsConatiner>

@@ -44,7 +44,7 @@ export const ItemsTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { itemId }) => (
+      render: (_, { itemId }) => (
         <>
           <Button
             type="default"

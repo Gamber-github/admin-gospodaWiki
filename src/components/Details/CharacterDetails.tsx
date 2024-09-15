@@ -17,11 +17,7 @@ export const CharacterDetails: React.FC<{
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const {
-    mutateAsync: publishMutateAsync,
-    error,
-    status,
-  } = usePublishCharacter();
+  const { mutateAsync: publishMutateAsync, status } = usePublishCharacter();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -102,7 +98,6 @@ export const CharacterDetails: React.FC<{
       <DetailsPanel
         publish={publish}
         status={status}
-        error={error}
         isPublished={data.isPublished}
         showModal={showModal}
       />
