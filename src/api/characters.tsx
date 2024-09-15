@@ -19,6 +19,7 @@ import {
   emptySchema,
 } from "./ResponseSchema/responseSchemas";
 import { EmptyObject } from "react-hook-form";
+import { message } from "antd";
 
 export type characterIdParam = {
   characterId: string;
@@ -57,6 +58,7 @@ export const useDeleteCharacter = () => {
       deleteCharacter({ characterId, payload: {} }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["characters"] });
+      message.success("Rekord pomyślnie usunięty");
     },
   });
 };

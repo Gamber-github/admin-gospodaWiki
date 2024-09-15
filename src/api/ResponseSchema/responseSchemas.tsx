@@ -55,7 +55,7 @@ export const characterReferenceSchema = z.object({
 
 export const rpgSystemReferenceSchema = z.object({
   rpgSystemId: z.number(),
-  name: z.string(),
+  name: z.string().optional(),
 });
 
 export const tagsResponseSchema = z.object({
@@ -79,7 +79,7 @@ export const seriesListResponseSchema =
 
 export const serieReferenceSchema = z.object({
   seriesId: z.number(),
-  name: z.string(),
+  name: z.string().optional(),
 });
 
 export const charactersListResponseSchema = z.object({
@@ -115,7 +115,7 @@ export const characterDetailsResponseSchema = z.object({
 
 export const rpgSystemsResponseSchema = z.object({
   rpgSystemId: z.number(),
-  name: z.string(),
+  name: z.string().optional(),
   isPublished: z.boolean(),
 });
 
@@ -143,7 +143,6 @@ export const rpgSystemDetailsResponseSchema = z.object({
   tags: z.array(tagsResponseSchema),
   characters: z.array(characterReferenceSchema),
   series: z.array(serieReferenceSchema),
-  stories: z.array(storyReferenceResponseSchema),
 });
 
 export const serieDetailsResponseSchema = z.object({
@@ -244,6 +243,31 @@ export const locationDetailsResponseSchema = z.object({
   locationURL: z.string().optional(),
   events: z.array(eventReferenceResponseSchema),
 });
+
+export const AdventureResponseSchema = z.object({
+  adventureId: z.number(),
+  title: z.string(),
+  isPublished: z.boolean(),
+});
+
+export const adventuresListResponseSchema = buildListEndpointSchema(
+  AdventureResponseSchema
+);
+
+export const adventureDetailsResponseSchema = z.object({
+  adventureId: z.number(),
+  title: z.string(),
+  description: z.string().optional(),
+  series: serieReferenceSchema.optional(),
+  rpgSystem: rpgSystemReferenceSchema.optional(),
+  tags: z.array(tagsResponseSchema).optional(),
+  characters: z.array(characterReferenceSchema).optional(),
+  isPublished: z.boolean(),
+});
+
+export type AdventureDetailsResponseSchema = z.infer<
+  typeof adventureDetailsResponseSchema
+>;
 
 export type LocationDetailsResponseSchema = z.infer<
   typeof locationDetailsResponseSchema

@@ -6,31 +6,38 @@ import { useNav } from "../../routes/router";
 import { ColumnType } from "antd/es/table";
 import { EditOutlined } from "@ant-design/icons";
 import DeleteButton from "../UI/Buttons/DeleteButton";
-import { EventIdParam } from "../../api/events";
 import { ButtonsConteiner } from "../UI/CustomStyles/CustomStyles";
-import { useDeleteEvent, useGetEvents } from "../../api/events";
-import { DefaultTableData } from "./utils";
 
-type TableData = DefaultTableData & { eventId: number };
+import {
+  AdventureIdParam,
+  useDeleteAdventure,
+  useGetAdventures,
+} from "../../api/adventure";
+
+type TableData = {
+  title: string;
+  isPublished: boolean;
+  adventureId: number;
+};
 
 const { Text } = Typography;
 
-export const EventsTable: React.FC = () => {
+export const AdventuresTable: React.FC = () => {
   const [page, setPage] = useState(1);
 
-  const { data, status, error } = useGetEvents({
+  const { data, status, error } = useGetAdventures({
     pageSize: DEFAULT_TABLE_SIZE,
     pageNumber: page,
   });
 
-  const { mutateAsync, status: DeleteStatus } = useDeleteEvent();
+  const { mutateAsync, status: DeleteStatus } = useDeleteAdventure();
 
   const { navigate } = useNav();
 
   const columns: ColumnType<TableData>[] = [
     {
       title: "Nazwa",
-      dataIndex: "name",
+      dataIndex: "title",
       key: "name",
       align: "center",
       render: (text) => <Text>{text}</Text>,
@@ -46,17 +53,19 @@ export const EventsTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (_, { eventId }) => (
+      render: (_, { adventureId }) => (
         <ButtonsConteiner>
           <Button
             type="default"
-            key={eventId}
-            onClick={() => navigate("editEvent", { id: eventId.toString() })}
+            key={adventureId}
+            onClick={() =>
+              navigate("editAdventure", { id: adventureId.toString() })
+            }
           >
             <EditOutlined />
           </Button>
-          <DeleteButton<EventIdParam>
-            payload={{ eventId: eventId.toString() }}
+          <DeleteButton<AdventureIdParam>
+            payload={{ adventureId: adventureId.toString() }}
             mutateAsync={mutateAsync}
             status={DeleteStatus}
           />
@@ -72,7 +81,7 @@ export const EventsTable: React.FC = () => {
     <Table
       columns={columns}
       dataSource={data.items}
-      rowKey={(item) => item.eventId}
+      rowKey={(item) => item.adventureId}
       pagination={buildPagination(data, setPage)}
     />
   );

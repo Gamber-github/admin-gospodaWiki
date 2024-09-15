@@ -146,10 +146,12 @@ export const EditSerieForm: React.FC<{
               status={rpgSystemStatus}
               {...field}
               data={
-                serieData.rpgSystem && {
-                  valueId: serieData.rpgSystem.rpgSystemId,
-                  name: serieData.rpgSystem.name,
-                }
+                serieData.rpgSystem?.rpgSystemId && serieData.rpgSystem?.name
+                  ? {
+                      valueId: serieData.rpgSystem.rpgSystemId,
+                      name: serieData.rpgSystem.name,
+                    }
+                  : undefined
               }
               onChange={field.onChange}
             />

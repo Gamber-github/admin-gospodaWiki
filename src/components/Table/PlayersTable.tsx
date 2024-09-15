@@ -15,9 +15,9 @@ import DeleteButton from "../UI/Buttons/DeleteButton";
 
 type PlayerData = {
   playerId: number;
-  firstName: string;
-  lastName: string;
-  fullName: string;
+  firstName?: string;
+  lastName?: string;
+  fullName?: string;
   isPublished: boolean;
 };
 
@@ -41,9 +41,7 @@ export const PlayersTable: React.FC = () => {
       dataIndex: "fullName",
       key: "fullName",
       align: "center",
-      render: (text, data) => (
-        <Text>{data.firstName + " " + data.lastName}</Text>
-      ),
+      render: (_, data) => <Text>{data.firstName + " " + data.lastName}</Text>,
     },
     {
       title: "Opublikowany",
@@ -56,7 +54,7 @@ export const PlayersTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { playerId }) => (
+      render: (_, { playerId }) => (
         <>
           <Button
             type="default"
@@ -82,7 +80,7 @@ export const PlayersTable: React.FC = () => {
     return <StatusAsyncHelper status={status} error={error} />;
 
   return (
-    <Table
+    <Table<PlayerData>
       columns={columns}
       dataSource={data.items}
       rowKey={(item) => item.playerId}

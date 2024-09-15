@@ -17,7 +17,7 @@ export const SerieDetails: React.FC<{
 }> = ({ data }) => {
   const { showModal, closeModal, isModalOpen } = useModalProps();
 
-  const { mutateAsync: publishMutateAsync, error, status } = usePublishSerie();
+  const { mutateAsync: publishMutateAsync, status } = usePublishSerie();
 
   const items: DescriptionsProps["items"] = [
     {
@@ -108,7 +108,6 @@ export const SerieDetails: React.FC<{
   return (
     <DetailsConatiner>
       <DetailsPanel
-        error={error}
         isPublished={data.isPublished}
         publish={publish}
         showModal={showModal}

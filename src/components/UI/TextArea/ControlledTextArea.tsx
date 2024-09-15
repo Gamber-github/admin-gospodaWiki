@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "antd";
-import { Controller, Control, FieldErrors } from "react-hook-form";
+import { Controller, FieldErrors } from "react-hook-form";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import the styles for ReactQuill
+import "react-quill/dist/quill.snow.css";
+import { ControlledElement } from "../types";
 
 interface ControlledInputProps {
-  control: Control;
   errors: FieldErrors;
   name: string;
   label: string;
@@ -13,7 +13,7 @@ interface ControlledInputProps {
   disabled?: boolean;
 }
 
-export const ControlledTextArea: React.FC<ControlledInputProps> = ({
+export const ControlledTextArea: ControlledElement<ControlledInputProps> = ({
   control,
   errors,
   name,

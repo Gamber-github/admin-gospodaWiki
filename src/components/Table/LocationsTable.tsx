@@ -49,7 +49,7 @@ export const LocationsTable: React.FC = () => {
       title: "Akcje",
       key: "action",
       align: "center",
-      render: (text, { locationId }) => (
+      render: (_, { locationId }) => (
         <ButtonsConteiner>
           <Button
             type="default"
