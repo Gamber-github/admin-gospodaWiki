@@ -38,7 +38,9 @@ const TableWrapper = styled.div`
 
 const StyledTable = styled(Table)`
   .ant-table-body {
-    min-height: calc(5 * 54px);
+    min-height: calc(
+      5 * 54px
+    ); /* Assuming each row is approximately 54px high */
   }
 `;
 
@@ -100,32 +102,30 @@ const Dashboard: React.FC = () => {
     error: rpgSystemsError,
   } = useGetRpgSystems();
 
-  const getLastFiveUnpublished = <T extends { isPublished: boolean }>(
+  const filterUnpublished = <T extends { isPublished: boolean }>(
     data: T[]
   ): T[] => {
-    return data.filter((item) => !item.isPublished).slice(-5);
+    return data.filter((item) => !item.isPublished);
   };
 
-  const players = playersData ? getLastFiveUnpublished(playersData.items) : [];
-  const items = itemsData ? getLastFiveUnpublished(itemsData.items) : [];
-  const series = seriesData ? getLastFiveUnpublished(seriesData.items) : [];
+  const players = playersData ? filterUnpublished(playersData.items) : [];
+  const items = itemsData ? filterUnpublished(itemsData.items) : [];
+  const series = seriesData ? filterUnpublished(seriesData.items) : [];
   const adventures = adventuresData
-    ? getLastFiveUnpublished(adventuresData.items)
+    ? filterUnpublished(adventuresData.items)
     : [];
   const characters = charactersData
-    ? getLastFiveUnpublished(charactersData.items)
+    ? filterUnpublished(charactersData.items)
     : [];
-  const events = eventsData ? getLastFiveUnpublished(eventsData.items) : [];
-  const locations = locationsData
-    ? getLastFiveUnpublished(locationsData.items)
-    : [];
+  const events = eventsData ? filterUnpublished(eventsData.items) : [];
+  const locations = locationsData ? filterUnpublished(locationsData.items) : [];
   const rpgSystems = rpgSystemsData
-    ? getLastFiveUnpublished(rpgSystemsData.items)
+    ? filterUnpublished(rpgSystemsData.items)
     : [];
 
   const generateColumns = (entity: string, idField: keyof RecordType) => [
     {
-      title: "Nazwa",
+      title: "Name",
       dataIndex: "name",
       key: "name",
       render: (_: unknown, record: RecordType) =>
@@ -134,16 +134,16 @@ const Dashboard: React.FC = () => {
           : `${record.firstName || ""} ${record.lastName || record.name || ""}`,
     },
     {
-      title: "Opublikowane",
+      title: "Published",
       dataIndex: "isPublished",
       key: "isPublished",
-      render: (isPublished: boolean) => (isPublished ? "Tak" : "Nie"),
+      render: (isPublished: boolean) => (isPublished ? "Yes" : "No"),
     },
     {
-      title: "Akcja",
+      title: "Details",
       key: "details",
       render: (_: unknown, record: RecordType) => (
-        <Link to={`/${entity}/${record[idField]}/edit`}>Zobacz szczegóły</Link>
+        <Link to={`/${entity}/${record[idField]}/edit`}>View Details</Link>
       ),
     },
   ];
@@ -156,7 +156,7 @@ const Dashboard: React.FC = () => {
 
       <TableContainer>
         <TableWrapper>
-          <Title level={3}>Gracze</Title>
+          <Title level={3}>Players</Title>
           {playersStatus !== "success" ? (
             <StatusAsyncHelper status={playersStatus} error={playersError} />
           ) : (
@@ -164,13 +164,14 @@ const Dashboard: React.FC = () => {
               dataSource={players}
               columns={generateColumns("players", "playerId")}
               rowKey="playerId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
         </TableWrapper>
 
         <TableWrapper>
-          <Title level={3}>Przedmioty</Title>
+          <Title level={3}>Items</Title>
           {itemsStatus !== "success" ? (
             <StatusAsyncHelper status={itemsStatus} error={itemsError} />
           ) : (
@@ -178,13 +179,14 @@ const Dashboard: React.FC = () => {
               dataSource={items}
               columns={generateColumns("items", "itemId")}
               rowKey="itemId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
         </TableWrapper>
 
         <TableWrapper>
-          <Title level={3}>Serie</Title>
+          <Title level={3}>Series</Title>
           {seriesStatus !== "success" ? (
             <StatusAsyncHelper status={seriesStatus} error={seriesError} />
           ) : (
@@ -192,13 +194,14 @@ const Dashboard: React.FC = () => {
               dataSource={series}
               columns={generateColumns("series", "seriesId")}
               rowKey="seriesId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
         </TableWrapper>
 
         <TableWrapper>
-          <Title level={3}>Przygody</Title>
+          <Title level={3}>Adventures</Title>
           {adventuresStatus !== "success" ? (
             <StatusAsyncHelper
               status={adventuresStatus}
@@ -209,13 +212,14 @@ const Dashboard: React.FC = () => {
               dataSource={adventures}
               columns={generateColumns("adventures", "adventureId")}
               rowKey="adventureId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
         </TableWrapper>
 
         <TableWrapper>
-          <Title level={3}>Postacie</Title>
+          <Title level={3}>Characters</Title>
           {charactersStatus !== "success" ? (
             <StatusAsyncHelper
               status={charactersStatus}
@@ -226,13 +230,14 @@ const Dashboard: React.FC = () => {
               dataSource={characters}
               columns={generateColumns("characters", "characterId")}
               rowKey="characterId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
         </TableWrapper>
 
         <TableWrapper>
-          <Title level={3}>Eventy</Title>
+          <Title level={3}>Events</Title>
           {eventsStatus !== "success" ? (
             <StatusAsyncHelper status={eventsStatus} error={eventsError} />
           ) : (
@@ -240,13 +245,14 @@ const Dashboard: React.FC = () => {
               dataSource={events}
               columns={generateColumns("events", "eventId")}
               rowKey="eventId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
         </TableWrapper>
 
         <TableWrapper>
-          <Title level={3}>Lokacje eventowe</Title>
+          <Title level={3}>Locations</Title>
           {locationsStatus !== "success" ? (
             <StatusAsyncHelper
               status={locationsStatus}
@@ -257,13 +263,14 @@ const Dashboard: React.FC = () => {
               dataSource={locations}
               columns={generateColumns("locations", "locationId")}
               rowKey="locationId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
         </TableWrapper>
 
         <TableWrapper>
-          <Title level={3}>Systemy RPG</Title>
+          <Title level={3}>RPG Systems</Title>
           {rpgSystemsStatus !== "success" ? (
             <StatusAsyncHelper
               status={rpgSystemsStatus}
@@ -274,6 +281,7 @@ const Dashboard: React.FC = () => {
               dataSource={rpgSystems}
               columns={generateColumns("rpgSystems", "rpgSystemId")}
               rowKey="rpgSystemId"
+              pagination={{ pageSize: 5 }}
               locale={{ emptyText: noDataText }}
             />
           )}
